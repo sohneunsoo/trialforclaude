@@ -1,9 +1,60 @@
-// Project data — content mirrors the reference layout.
-// Tone color seeds the alcove's interior accent / placeholder swatch.
+// Project data — top row is dark/reserved; projects 01-08 fill rows 2-3.
 
 export const PROJECTS = [
+  // ── TOP ROW (dark, mostly empty — slot 2 = GATCHA direct link) ──────────
   {
     id: 1,
+    code: "—",
+    title: "—",
+    titleEn: "COMING SOON",
+    tags: "—",
+    tone: "#0d0d0d",
+    accent: "#ffffff",
+    year: "—", role: "—", status: "—",
+    desc1: "", desc2: "",
+    dark: true
+  },
+  {
+    id: 2,
+    code: "—",
+    title: "GATCHA",
+    titleEn: "GATCHA",
+    tags: "게임 · 인터랙티브",
+    tone: "#0d0d0d",
+    accent: "#ffffff",
+    year: "2026", role: "—", status: "Live",
+    desc1: "", desc2: "",
+    dark: true,
+    url: "https://gatcha-six.vercel.app/"
+  },
+  {
+    id: 3,
+    code: "—",
+    title: "—",
+    titleEn: "COMING SOON",
+    tags: "—",
+    tone: "#0d0d0d",
+    accent: "#ffffff",
+    year: "—", role: "—", status: "—",
+    desc1: "", desc2: "",
+    dark: true
+  },
+  {
+    id: 4,
+    code: "—",
+    title: "—",
+    titleEn: "COMING SOON",
+    tags: "—",
+    tone: "#0d0d0d",
+    accent: "#ffffff",
+    year: "—", role: "—", status: "—",
+    desc1: "", desc2: "",
+    dark: true
+  },
+
+  // ── MIDDLE ROW (projects 01 – 04) ────────────────────────────────────────
+  {
+    id: 5,
     code: "01",
     title: "고립로봇 청년 이모션",
     titleEn: "GOLIPROBOT — YOUTH EMOTION",
@@ -17,7 +68,7 @@ export const PROJECTS = [
     desc2: "Visitors walked between thirty robot-portraits, each with a recorded inner monologue triggered as they approached."
   },
   {
-    id: 2,
+    id: 6,
     code: "02",
     title: "GENERATIVE AGENT GAME",
     titleEn: "GENERATIVE AGENT GAME",
@@ -31,7 +82,7 @@ export const PROJECTS = [
     desc2: "The player is the only human in a town of agents. Conversations branch indefinitely; nothing is scripted."
   },
   {
-    id: 3,
+    id: 7,
     code: "03",
     title: "MY BOOK WITH AI",
     titleEn: "MY BOOK WITH AI",
@@ -45,7 +96,7 @@ export const PROJECTS = [
     desc2: "What remains is a strange dialogue between two writing styles, printed on uncoated stock with photocopied insets."
   },
   {
-    id: 4,
+    id: 8,
     code: "04",
     title: "STORY BOOK",
     titleEn: "STORY BOOK",
@@ -58,8 +109,10 @@ export const PROJECTS = [
     desc1: "A picture-book series following a small house and the seasons that pass through it.",
     desc2: "Each spread is hand-painted in gouache, scanned, and laid out alongside a single sentence."
   },
+
+  // ── FRONT ROW (projects 05 – 08) ─────────────────────────────────────────
   {
-    id: 5,
+    id: 9,
     code: "05",
     title: "BENNY'S ROOM BRANDING",
     titleEn: "BENNY'S ROOM",
@@ -73,7 +126,7 @@ export const PROJECTS = [
     desc2: "The identity leans into warm green and brass, photographed at night through the storefront glass."
   },
   {
-    id: 6,
+    id: 10,
     code: "06",
     title: "EMOTICON",
     titleEn: "EMOTICON",
@@ -87,7 +140,7 @@ export const PROJECTS = [
     desc2: "Modeled in clay first, then redrawn as flat vector. The proofs were soft enough to look photographed."
   },
   {
-    id: 7,
+    id: 11,
     code: "07",
     title: "COMMISSIONED ART & WORKS",
     titleEn: "COMMISSIONED ART",
@@ -101,7 +154,7 @@ export const PROJECTS = [
     desc2: "Selected works only. Each piece is its own world."
   },
   {
-    id: 8,
+    id: 12,
     code: "08",
     title: "ANIMATION",
     titleEn: "ANIMATION",
@@ -113,66 +166,5 @@ export const PROJECTS = [
     status: "Short Film",
     desc1: "A four-minute hand-drawn animation about a girl, a small white dog, and the bridge between two cities.",
     desc2: "Screened at three festivals; the score is built from field recordings of the same bridge in different weather."
-  },
-  {
-    id: 9,
-    code: "09",
-    title: "—",
-    titleEn: "COMING SOON",
-    tags: "— · —",
-    tone: "#0d0d0d",
-    accent: "#ffffff",
-    year: "—",
-    role: "—",
-    status: "Coming Soon",
-    desc1: "",
-    desc2: "",
-    dark: true
-  },
-  {
-    id: 10,
-    code: "10",
-    title: "GATCHA",
-    titleEn: "GATCHA",
-    tags: "게임 · 인터랙티브",
-    tone: "#0d0d0d",
-    accent: "#ffffff",
-    year: "2026",
-    role: "—",
-    status: "Live",
-    desc1: "Play now.",
-    desc2: "",
-    dark: true,
-    url: "https://gatcha-six.vercel.app/"
-  },
-  {
-    id: 11,
-    code: "11",
-    title: "—",
-    titleEn: "COMING SOON",
-    tags: "— · —",
-    tone: "#0d0d0d",
-    accent: "#ffffff",
-    year: "—",
-    role: "—",
-    status: "Coming Soon",
-    desc1: "",
-    desc2: "",
-    dark: true
-  },
-  {
-    id: 12,
-    code: "12",
-    title: "—",
-    titleEn: "COMING SOON",
-    tags: "— · —",
-    tone: "#0d0d0d",
-    accent: "#ffffff",
-    year: "—",
-    role: "—",
-    status: "Coming Soon",
-    desc1: "",
-    desc2: "",
-    dark: true
   }
 ];

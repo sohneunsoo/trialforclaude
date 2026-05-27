@@ -122,6 +122,9 @@ function detectProximity() {
     promptEl.classList.add('show');
     promptNum.textContent = best.project.code;
     promptTitle.textContent = best.project.titleEn;
+    // swap hint label: linked projects say VISIT, others say OPEN
+    const hintEl = promptEl.querySelector('.keyhint');
+    if (hintEl) hintEl.lastChild.textContent = best.project.url ? 'VISIT' : 'OPEN';
   } else {
     promptEl.classList.remove('show');
   }
@@ -154,6 +157,13 @@ let camAnim = null; // { from, to, fromTarget, toTarget, t, duration, onDone }
 function tryOpenProject() {
   if (!inRangeOf || openProject) return;
   const m = inRangeOf;
+
+  // Projects with a direct URL open immediately — no overlay
+  if (m.project.url) {
+    window.open(m.project.url, '_blank', 'noopener,noreferrer');
+    return;
+  }
+
   openProject = m;
   // disable controls while focusing
   controls.enabled = false;
