@@ -67,19 +67,19 @@ export function darkMatte(opts = {}) {
 }
 
 // Generate a small canvas with two lines of text used as a label sticker.
-export function makeLabelTexture(code, title, subtitle, width = 720, height = 240) {
+export function makeLabelTexture(code, title, subtitle, width = 720, height = 240, darkMode = false) {
   const c = document.createElement('canvas');
   c.width = width; c.height = height;
   const g = c.getContext('2d');
-  g.fillStyle = '#f6f3ec';
+  g.fillStyle = darkMode ? '#0d0d0d' : '#f6f3ec';
   g.fillRect(0, 0, width, height);
 
-  g.fillStyle = '#1a1a1a';
+  g.fillStyle = darkMode ? '#888888' : '#1a1a1a';
   g.font = '600 38px "Helvetica Neue", Helvetica, Arial, sans-serif';
   g.textBaseline = 'top';
   g.fillText(code, 24, 24);
 
-  g.fillStyle = '#1a1a1a';
+  g.fillStyle = darkMode ? '#ffffff' : '#1a1a1a';
   g.font = '600 56px "Helvetica Neue", Helvetica, Arial, sans-serif';
   // wrap title if needed
   const words = title.split(' ');
@@ -92,7 +92,7 @@ export function makeLabelTexture(code, title, subtitle, width = 720, height = 24
   }
   g.fillText(line, 24, y); y += 64;
 
-  g.fillStyle = '#777';
+  g.fillStyle = darkMode ? '#666666' : '#777';
   g.font = '500 28px "Helvetica Neue", Helvetica, Arial, sans-serif';
   g.fillText(subtitle, 24, y);
 

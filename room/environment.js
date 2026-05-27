@@ -457,11 +457,17 @@ export function buildEnvironment(scene) {
 // One alcove: a sunken display case with a small framed image inside.
 function buildAlcove(project) {
   const g = new THREE.Group();
+  const dark = !!project.dark;
+
+  const platMat  = dark ? darkMatte({ color: '#111111' }) : whiteMatte({ color: '#f7f3ea' });
+  const wellMat  = dark ? darkMatte({ color: '#1e1e1e' }) : whiteMatte({ color: '#ece8de' });
+  const rimMat   = dark ? darkMatte({ color: '#111111' }) : whiteMatte({ color: '#f7f3ea' });
+  const boardMat = dark ? darkMatte({ color: '#181818' }) : whiteMatte({ color: '#fafaf3' });
 
   // base platform (raised slightly above floor)
   const platform = new THREE.Mesh(
     new THREE.BoxGeometry(ALCOVE_W, 0.45, ALCOVE_D),
-    whiteMatte({ color: '#f7f3ea' })
+    platMat
   );
   platform.position.y = 0.225;
   platform.receiveShadow = true; platform.castShadow = true;
@@ -472,30 +478,24 @@ function buildAlcove(project) {
   const wellD = ALCOVE_D * 0.55;
   const well = new THREE.Mesh(
     new THREE.BoxGeometry(wellW, 0.32, wellD),
-    whiteMatte({ color: '#ece8de' })
+    wellMat
   );
-  well.position.set(0, 0.225 + 0.45 / 2 - 0.32 / 2 + 0.001, -ALCOVE_D * 0.05);
-  // actually simulate "sinking": raise platform with inner walls; easier to drop the floor
   well.position.set(0, 0.225 - 0.16, -ALCOVE_D * 0.05);
   well.receiveShadow = true;
   g.add(well);
 
   // raised inner walls forming the well rim
-  const rimMat = whiteMatte({ color: '#f7f3ea' });
   const rimT = 0.06;
   const wellH = 0.36;
-  // back rim
   const rb = new THREE.Mesh(
     new THREE.BoxGeometry(wellW + rimT * 2, wellH, rimT),
     rimMat
   );
   rb.position.set(0, 0.45 + wellH / 2 - 0.001, -ALCOVE_D * 0.05 - wellD / 2);
   g.add(rb);
-  // front rim
   const rf = rb.clone();
   rf.position.z = -ALCOVE_D * 0.05 + wellD / 2;
   g.add(rf);
-  // left rim
   const rl = new THREE.Mesh(
     new THREE.BoxGeometry(rimT, wellH, wellD + rimT * 2),
     rimMat
@@ -512,7 +512,6 @@ function buildAlcove(project) {
     new THREE.PlaneGeometry(artW, artH),
     new THREE.MeshStandardMaterial({ map: artTex, roughness: 0.6 })
   );
-  // tilt slightly back, sit on well floor
   art.position.set(0, 0.225 - 0.32 + artH / 2 + 0.05, -ALCOVE_D * 0.05);
   art.rotation.x = -0.06;
   art.castShadow = true;
@@ -521,15 +520,15 @@ function buildAlcove(project) {
   // little back board behind the art
   const backboard = new THREE.Mesh(
     new THREE.BoxGeometry(artW + 0.12, artH + 0.12, 0.04),
-    whiteMatte({ color: '#fafaf3' })
+    boardMat
   );
   backboard.position.set(0, art.position.y, art.position.z - 0.03);
   backboard.rotation.x = art.rotation.x;
   backboard.castShadow = true;
   g.add(backboard);
 
-  // label plate on the platform (front face) — printed in the "lip" area
-  const lblTex = makeLabelTexture(project.code, project.title, project.tags, 720, 240);
+  // label plate on the platform (front face)
+  const lblTex = makeLabelTexture(project.code, project.title, project.tags, 720, 240, dark);
   const labelMat = new THREE.MeshStandardMaterial({ map: lblTex, roughness: 0.92 });
   const labelW = ALCOVE_W - 0.4;
   const labelH = labelW * (240 / 720);
@@ -537,7 +536,6 @@ function buildAlcove(project) {
     new THREE.PlaneGeometry(labelW, labelH),
     labelMat
   );
-  // sit on the platform-top, front portion
   labelPlate.position.set(0, 0.451, ALCOVE_D / 2 - labelH / 2 - 0.15);
   labelPlate.rotation.x = -Math.PI / 2;
   g.add(labelPlate);

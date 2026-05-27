@@ -145,6 +145,7 @@ const ovRole = document.getElementById('ov-role');
 const ovStatus = document.getElementById('ov-status');
 const ovArtBg = document.getElementById('ov-art-bg');
 const ovArtLabel = document.getElementById('ov-art-label');
+const ovVisit = document.getElementById('ov-visit');
 document.getElementById('ov-close').addEventListener('click', closeProject);
 
 let savedCam = null;
@@ -205,6 +206,12 @@ function fillOverlay(p) {
   ovStatus.textContent = p.status;
   ovArtBg.style.background = p.tone;
   ovArtLabel.textContent = '[ ' + p.titleEn + ' — HERO IMAGE ]';
+  if (p.url) {
+    ovVisit.href = p.url;
+    ovVisit.style.display = 'inline-flex';
+  } else {
+    ovVisit.style.display = 'none';
+  }
 }
 
 // ----- Movement -----
