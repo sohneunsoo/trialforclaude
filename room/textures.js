@@ -153,16 +153,6 @@ export function makeBillboardTexture() {
   const g = c.getContext('2d');
 
   const slides = [
-    { bg1: '#1a2a55', bg2: '#0a1230', accent: '#ffd24a',
-      kicker: 'NOW SHOWING',  big: 'BORISUSU',     sub: 'CREATIVE STUDIO · SEOUL · 2026' },
-    { bg1: '#3b0d2e', bg2: '#761a4d', accent: '#fff0c2',
-      kicker: 'NEW DROP',     big: 'AURORA / 05',  sub: 'INTERACTIVE FILM · STREAMING SOON' },
-    { bg1: '#0e3a2a', bg2: '#176b4a', accent: '#ffe085',
-      kicker: 'IN ROTATION',  big: 'FIELD NOTES',  sub: 'DESIGN DIARY · WEEKLY' },
-    { bg1: '#c43a1f', bg2: '#7a1d0e', accent: '#fff3d6',
-      kicker: 'CAMPAIGN',     big: 'KIOSK·22',     sub: 'WAYFINDING · PUBLIC PROJECT' },
-    { bg1: '#101014', bg2: '#2a2a36', accent: '#7af7c9',
-      kicker: 'TONIGHT',      big: 'LATE NIGHT',   sub: 'LIVE SET · 23:00 KST' },
     { bg1: '#0d0d1a', bg2: '#1a1a3a', accent: '#a8d8ff',
       kicker: 'AI 시리즈',
       big: 'AI 4차 산업\n부랴부랴 따라잡기', bigSize: 76,
@@ -171,6 +161,7 @@ export function makeBillboardTexture() {
       kicker: '부제',
       big: 'AI 아이돌\n만들기(?)', bigSize: 88,
       sub: 'AI 4차 산업 부랴부랴 따라잡기' },
+    { imageUrl: './uploads/monosian.png' },
   ];
 
   // pre-render each slide to its own offscreen canvas so we can crossfade
@@ -181,6 +172,24 @@ export function makeBillboardTexture() {
     const cc = document.createElement('canvas');
     cc.width = w; cc.height = h;
     const gg = cc.getContext('2d');
+
+    if (s.imageUrl) {
+      gg.fillStyle = '#000';
+      gg.fillRect(0, 0, w, h);
+      const img = new Image();
+      img.onload = () => {
+        gg.clearRect(0, 0, w, h);
+        gg.fillStyle = '#000';
+        gg.fillRect(0, 0, w, h);
+        const scale = Math.min(w / img.width, h / img.height);
+        const iw = img.width * scale;
+        const ih = img.height * scale;
+        gg.drawImage(img, (w - iw) / 2, (h - ih) / 2, iw, ih);
+      };
+      img.src = s.imageUrl;
+      return cc;
+    }
+
     // gradient background
     const grad = gg.createLinearGradient(0, 0, w, h);
     grad.addColorStop(0, s.bg1);
