@@ -163,6 +163,14 @@ export function makeBillboardTexture() {
       kicker: 'CAMPAIGN',     big: 'KIOSK·22',     sub: 'WAYFINDING · PUBLIC PROJECT' },
     { bg1: '#101014', bg2: '#2a2a36', accent: '#7af7c9',
       kicker: 'TONIGHT',      big: 'LATE NIGHT',   sub: 'LIVE SET · 23:00 KST' },
+    { bg1: '#0d0d1a', bg2: '#1a1a3a', accent: '#a8d8ff',
+      kicker: 'AI 시리즈',
+      big: 'AI 4차 산업\n부랴부랴 따라잡기', bigSize: 76,
+      sub: '부제: AI 아이돌 만들기(?)' },
+    { bg1: '#1a0a2e', bg2: '#2e1a4a', accent: '#ffb3d9',
+      kicker: '부제',
+      big: 'AI 아이돌\n만들기(?)', bigSize: 88,
+      sub: 'AI 4차 산업 부랴부랴 따라잡기' },
   ];
 
   // pre-render each slide to its own offscreen canvas so we can crossfade
@@ -197,16 +205,29 @@ export function makeBillboardTexture() {
     gg.textBaseline = 'middle';
     gg.fillText(kickerText, 60 + 22, 60 + 25);
 
-    // big headline
+    // big headline — supports \n line breaks and custom bigSize
     gg.fillStyle = '#fff';
-    gg.font = '700 168px "Cormorant Garamond", "Times New Roman", serif';
     gg.textBaseline = 'alphabetic';
-    gg.fillText(s.big, 60, 360);
+    const bigSize = s.bigSize || 168;
+    const bigFont = bigSize >= 100
+      ? `700 ${bigSize}px "Cormorant Garamond", "Times New Roman", serif`
+      : `700 ${bigSize}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
+    gg.font = bigFont;
+    const bigLines = s.big.split('\n');
+    const lineH = bigSize * 1.18;
+    // centre the block vertically in the upper 2/3 of the canvas
+    const blockH = bigLines.length * lineH;
+    let bigY = (h * 0.62 - blockH) / 2 + lineH;
+    bigY = Math.max(bigY, 140); // never overlap kicker
+    for (const line of bigLines) {
+      gg.fillText(line, 60, bigY);
+      bigY += lineH;
+    }
 
     // subtitle
     gg.fillStyle = 'rgba(255,255,255,0.78)';
     gg.font = '500 30px "Helvetica Neue", Helvetica, Arial, sans-serif';
-    gg.fillText(s.sub, 60, 420);
+    gg.fillText(s.sub, 60, bigY + 18);
 
     // tiny bottom strip
     gg.fillStyle = 'rgba(0,0,0,0.35)';
