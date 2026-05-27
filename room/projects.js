@@ -1,0 +1,117 @@
+// Project data — content mirrors the reference layout.
+// Tone color seeds the alcove's interior accent / placeholder swatch.
+
+export const PROJECTS = [
+  {
+    id: 1,
+    code: "01",
+    title: "고립로봇 청년 이모션",
+    titleEn: "GOLIPROBOT — YOUTH EMOTION",
+    tags: "기획 · 전시 · AI",
+    tone: "#d8d2c4",
+    accent: "#8a6e54",
+    year: "2025",
+    role: "Curation · Direction",
+    status: "Exhibited",
+    desc1: "An exhibition exploring the inner emotional life of isolated youth, mediated through AI-generated character studies and large-scale printed portraits.",
+    desc2: "Visitors walked between thirty robot-portraits, each with a recorded inner monologue triggered as they approached."
+  },
+  {
+    id: 2,
+    code: "02",
+    title: "GENERATIVE AGENT GAME",
+    titleEn: "GENERATIVE AGENT GAME",
+    tags: "AI · 게임 · 개발",
+    tone: "#1c2434",
+    accent: "#5b78b8",
+    year: "2025",
+    role: "Concept · Build",
+    status: "Prototype",
+    desc1: "A small simulation where each NPC carries its own memory and motivations, written by a generative model in the loop.",
+    desc2: "The player is the only human in a town of agents. Conversations branch indefinitely; nothing is scripted."
+  },
+  {
+    id: 3,
+    code: "03",
+    title: "MY BOOK WITH AI",
+    titleEn: "MY BOOK WITH AI",
+    tags: "출판 · 만화 · AI",
+    tone: "#ecebe6",
+    accent: "#2a2a2a",
+    year: "2024",
+    role: "Author · Illustrator",
+    status: "Published",
+    desc1: "A short graphic novel co-written with a language model — the model proposed sentences, the author refused most of them.",
+    desc2: "What remains is a strange dialogue between two writing styles, printed on uncoated stock with photocopied insets."
+  },
+  {
+    id: 4,
+    code: "04",
+    title: "STORY BOOK",
+    titleEn: "STORY BOOK",
+    tags: "스토리 · 기획 · 일러스트",
+    tone: "#c6d3b1",
+    accent: "#4f6b3a",
+    year: "2024",
+    role: "Writer · Illustrator",
+    status: "Series",
+    desc1: "A picture-book series following a small house and the seasons that pass through it.",
+    desc2: "Each spread is hand-painted in gouache, scanned, and laid out alongside a single sentence."
+  },
+  {
+    id: 5,
+    code: "05",
+    title: "BENNY'S ROOM BRANDING",
+    titleEn: "BENNY'S ROOM",
+    tags: "브랜딩 · 디자인",
+    tone: "#1f3a2a",
+    accent: "#d8c98a",
+    year: "2024",
+    role: "Brand Direction",
+    status: "Live",
+    desc1: "Branding system for a small café-bookstore — wordmark, signage, menus, paper goods, and a recurring window installation.",
+    desc2: "The identity leans into warm green and brass, photographed at night through the storefront glass."
+  },
+  {
+    id: 6,
+    code: "06",
+    title: "EMOTICON",
+    titleEn: "EMOTICON",
+    tags: "이모티콘 · 캐릭터",
+    tone: "#e2d8c8",
+    accent: "#8c6a44",
+    year: "2023",
+    role: "Character Design",
+    status: "Released",
+    desc1: "A set of wooden-bear emoticons designed for a messaging platform. Three siblings, twenty-four moods.",
+    desc2: "Modeled in clay first, then redrawn as flat vector. The proofs were soft enough to look photographed."
+  },
+  {
+    id: 7,
+    code: "07",
+    title: "COMMISSIONED ART & WORKS",
+    titleEn: "COMMISSIONED ART",
+    tags: "일러스트 · 영상 · 작업",
+    tone: "#3b2a3a",
+    accent: "#c69ec0",
+    year: "2022 –",
+    role: "Illustrator",
+    status: "Ongoing",
+    desc1: "An archive of commissioned portraits, editorial illustrations, and short motion pieces for clients in publishing and music.",
+    desc2: "Selected works only. Each piece is its own world."
+  },
+  {
+    id: 8,
+    code: "08",
+    title: "ANIMATION",
+    titleEn: "ANIMATION",
+    tags: "애니메이션 · 영상",
+    tone: "#9bbcde",
+    accent: "#2a5582",
+    year: "2023",
+    role: "Director · Animator",
+    status: "Short Film",
+    desc1: "A four-minute hand-drawn animation about a girl, a small white dog, and the bridge between two cities.",
+    desc2: "Screened at three festivals; the score is built from field recordings of the same bridge in different weather."
+  }
+];
