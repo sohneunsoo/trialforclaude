@@ -16,9 +16,9 @@ export const ROOM = {
   chromeH: 1.6 // title bar height (sits above the back wall)
 };
 
-// 2 rows x 4 cols of project alcoves, sunken into floor
+// 3 rows x 4 cols of project alcoves, sunken into floor
 const COLS = 4;
-const ROWS = 2;
+const ROWS = 3;
 const ALCOVE_W = 4.4;
 const ALCOVE_D = 4.4;
 const ALCOVE_GAP_X = 0.55;

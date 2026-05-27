@@ -113,5 +113,61 @@ export const PROJECTS = [
     status: "Short Film",
     desc1: "A four-minute hand-drawn animation about a girl, a small white dog, and the bridge between two cities.",
     desc2: "Screened at three festivals; the score is built from field recordings of the same bridge in different weather."
+  },
+  {
+    id: 9,
+    code: "09",
+    title: "프로젝트 09",
+    titleEn: "PROJECT 09",
+    tags: "— · —",
+    tone: "#e8e2d6",
+    accent: "#4a4a4a",
+    year: "—",
+    role: "—",
+    status: "Coming Soon",
+    desc1: "Coming soon.",
+    desc2: ""
+  },
+  {
+    id: 10,
+    code: "10",
+    title: "프로젝트 10",
+    titleEn: "PROJECT 10",
+    tags: "— · —",
+    tone: "#d6dde8",
+    accent: "#3a4a5a",
+    year: "—",
+    role: "—",
+    status: "Coming Soon",
+    desc1: "Coming soon.",
+    desc2: ""
+  },
+  {
+    id: 11,
+    code: "11",
+    title: "프로젝트 11",
+    titleEn: "PROJECT 11",
+    tags: "— · —",
+    tone: "#e8d6d6",
+    accent: "#5a3a3a",
+    year: "—",
+    role: "—",
+    status: "Coming Soon",
+    desc1: "Coming soon.",
+    desc2: ""
+  },
+  {
+    id: 12,
+    code: "12",
+    title: "프로젝트 12",
+    titleEn: "PROJECT 12",
+    tags: "— · —",
+    tone: "#d6e8d6",
+    accent: "#3a5a3a",
+    year: "—",
+    role: "—",
+    status: "Coming Soon",
+    desc1: "Coming soon.",
+    desc2: ""
   }
 ];
