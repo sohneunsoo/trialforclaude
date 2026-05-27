@@ -52,6 +52,60 @@ export const PROJECTS = [
     dark: true
   },
 
+  // ── AI ROW (row 2 — AI content pages + 2 empty slots) ──────────────────
+  {
+    id: 13,
+    code: "AI·1",
+    title: "AI 제작 툴 도감",
+    titleEn: "AI TOOL MAP",
+    tags: "리소스 · AI · 툴",
+    tone: "#0a1a3a",
+    accent: "#7ab8ff",
+    year: "2026",
+    role: "Researcher · Editor",
+    status: "Live",
+    desc1: "AI 툴은 모델명으로 외우는 것보다 작업 목적별로 분류해서 쓰는 것이 중요합니다.",
+    desc2: "영상·오디오·3D·디자인·코딩·오픈소스까지 작업별로 찾아보는 AI 툴 맵.",
+    url: "./ai-tool-map.html"
+  },
+  {
+    id: 14,
+    code: "AI·2",
+    title: "AI 작업자 생존 가이드",
+    titleEn: "AI CREATOR GUIDE",
+    tags: "가이드 · AI · 워크플로우",
+    tone: "#1a0a2e",
+    accent: "#ffb3d9",
+    year: "2026",
+    role: "Writer · Researcher",
+    status: "Live",
+    desc1: "AI를 잘 쓰는 사람은 프롬프트를 많이 아는 사람이 아닙니다.",
+    desc2: "작업을 나누고, 검증하고, 실패를 기록하고, 다시 쓸 수 있게 축적하는 사람입니다.",
+    url: "./ai-creator-guide.html"
+  },
+  {
+    id: 15,
+    code: "—",
+    title: "—",
+    titleEn: "COMING SOON",
+    tags: "—",
+    tone: "#e9e5dd",
+    accent: "#aaaaaa",
+    year: "—", role: "—", status: "—",
+    desc1: "", desc2: ""
+  },
+  {
+    id: 16,
+    code: "—",
+    title: "—",
+    titleEn: "COMING SOON",
+    tags: "—",
+    tone: "#e9e5dd",
+    accent: "#aaaaaa",
+    year: "—", role: "—", status: "—",
+    desc1: "", desc2: ""
+  },
+
   // ── MIDDLE ROW (projects 01 – 04) ────────────────────────────────────────
   {
     id: 5,

@@ -7,18 +7,18 @@ import {
   makeBillboardTexture
 } from './textures.js';
 
-// Room dimensions (units = ~decimeters; ~28 x 28)
+// Room dimensions (units = ~decimeters; ~28 x 32)
 export const ROOM = {
   width: 28,
-  depth: 28,
+  depth: 32,
   wallH: 3.6,
   outerThick: 0.5,
   chromeH: 1.6 // title bar height (sits above the back wall)
 };
 
-// 3 rows x 4 cols of project alcoves, sunken into floor
+// 4 rows x 4 cols of project alcoves, sunken into floor
 const COLS = 4;
-const ROWS = 3;
+const ROWS = 4;
 const ALCOVE_W = 4.4;
 const ALCOVE_D = 4.4;
 const ALCOVE_GAP_X = 0.55;

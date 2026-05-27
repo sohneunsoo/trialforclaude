@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 제작 툴 도감 — Borisusu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #eef2fa;
+    --surface: rgba(255,255,255,0.85);
+    --surface-solid: #ffffff;
+    --primary: #1a2a55;
+    --accent: #4a7bcb;
+    --accent-light: #dce8f8;
+    --text: #0d0d0d;
+    --text-2: #444;
+    --text-3: #888;
+    --border: rgba(0,0,0,0.08);
+    --radius: 12px;
+    --serif: "Cormorant Garamond", "Times New Roman", serif;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ---- nav ---- */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(238,242,250,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 clamp(1rem, 4vw, 3rem);
+    height: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .site-nav a {
+    color: var(--primary); text-decoration: none;
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .site-nav a:hover { opacity: 0.65; }
+  .nav-title { font-size: 0.78rem; color: var(--text-3); letter-spacing: 0.04em; }
+
+  /* ---- hero ---- */
+  .hero {
+    padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .hero-kicker {
+    display: inline-block;
+    background: var(--primary); color: #fff;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 4px 12px; border-radius: 4px;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 600; line-height: 1.15; color: var(--primary);
+    margin-bottom: 0.6rem;
+  }
+  .hero-sub {
+    font-size: clamp(0.95rem, 2vw, 1.05rem); color: var(--text-2);
+    margin-bottom: 1.4rem; max-width: 640px;
+  }
+  .hero-intro {
+    font-size: 0.95rem; color: var(--text-2); line-height: 1.75;
+    max-width: 640px; border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+  }
+
+  /* ---- how-to ---- */
+  .how-to {
+    background: var(--primary);
+    color: #fff;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 4vw, 3rem);
+  }
+  .how-to-inner { max-width: 860px; margin: 0 auto; }
+  .how-to h2 {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 600;
+    margin-bottom: 1.2rem; opacity: 0.9;
+  }
+  .how-to ol {
+    list-style: none; counter-reset: steps;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .how-to li {
+    counter-increment: steps;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px; padding: 1rem 1.1rem;
+    font-size: 0.88rem; line-height: 1.65;
+    position: relative; padding-left: 2.6rem;
+  }
+  .how-to li::before {
+    content: counter(steps);
+    position: absolute; left: 0.9rem; top: 1rem;
+    font-size: 0.72rem; font-weight: 700; opacity: 0.55;
+  }
+
+  /* ---- controls ---- */
+  .controls {
+    padding: 2rem clamp(1rem, 4vw, 3rem) 1.2rem;
+    max-width: 1120px; margin: 0 auto;
+    display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;
+  }
+  .search-wrap {
+    flex: 1 1 260px;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 0.55rem 1rem 0.55rem 2.4rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px; background: var(--surface-solid);
+    font-size: 0.88rem; font-family: var(--sans); color: var(--text);
+    outline: none; transition: border-color 0.15s;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap::before {
+    content: "🔍";
+    position: absolute; left: 0.7rem; top: 50%;
+    transform: translateY(-50%); font-size: 0.78rem; pointer-events: none;
+  }
+  .filters { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .filter-btn {
+    padding: 0.35rem 0.85rem; border-radius: 20px;
+    border: 1.5px solid var(--border); background: var(--surface-solid);
+    font-size: 0.78rem; font-family: var(--sans); color: var(--text-2);
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active {
+    background: var(--primary); border-color: var(--primary); color: #fff;
+  }
+
+  /* ---- tool grid ---- */
+  .tool-grid {
+    max-width: 1120px; margin: 0 auto;
+    padding: 0.5rem clamp(1rem, 4vw, 3rem) 3rem;
+  }
+
+  .category-block { margin-bottom: 3rem; }
+  .category-block.hidden { display: none; }
+
+  .cat-header {
+    margin-bottom: 1rem; padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--primary);
+    display: flex; align-items: baseline; gap: 0.8rem;
+  }
+  .cat-name {
+    font-family: var(--serif); font-size: 1.35rem;
+    font-weight: 600; color: var(--primary);
+  }
+  .cat-count { font-size: 0.75rem; color: var(--text-3); }
+  .cat-desc { font-size: 0.82rem; color: var(--text-2); margin-bottom: 1rem; line-height: 1.6; }
+
+  .tools-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .tool-card {
+    background: var(--surface-solid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    transition: box-shadow 0.15s, transform 0.12s;
+  }
+  .tool-card:hover {
+    box-shadow: 0 4px 18px rgba(74,123,203,0.12);
+    transform: translateY(-2px);
+  }
+  .tool-card.hidden { display: none; }
+
+  .tool-name {
+    font-weight: 700; font-size: 0.92rem;
+    color: var(--primary); margin-bottom: 0.25rem;
+  }
+  .tool-use {
+    font-size: 0.82rem; color: var(--text-2); margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+  .tool-example {
+    font-size: 0.78rem; color: var(--text-3);
+    background: var(--accent-light); border-radius: 6px;
+    padding: 0.35rem 0.55rem; margin-bottom: 0.45rem; line-height: 1.5;
+  }
+  .tool-meta { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.35rem; }
+  .chip {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
+    padding: 2px 7px; border-radius: 4px; line-height: 1.5;
+  }
+  .chip-for { background: #e8f0e8; color: #2a6a2a; }
+  .chip-memo { background: #fff8e8; color: #7a5a10; }
+
+  /* ---- pipelines ---- */
+  .pipelines {
+    background: var(--primary);
+    padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem);
+  }
+  .pipelines-inner { max-width: 1120px; margin: 0 auto; }
+  .pipelines h2 {
+    font-family: var(--serif); font-size: 1.8rem; font-weight: 600;
+    color: #fff; margin-bottom: 0.4rem;
+  }
+  .pipelines-sub { font-size: 0.88rem; color: rgba(255,255,255,0.6); margin-bottom: 2rem; }
+
+  .pipeline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.2rem;
+  }
+  .pipeline-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius); padding: 1.2rem 1.3rem;
+  }
+  .pipeline-title {
+    font-weight: 700; color: #fff; font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+  .pipeline-steps {
+    list-style: none; counter-reset: steps;
+  }
+  .pipeline-steps li {
+    counter-increment: steps;
+    font-size: 0.8rem; color: rgba(255,255,255,0.75);
+    padding: 0.3rem 0 0.3rem 1.8rem; position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.06); line-height: 1.5;
+  }
+  .pipeline-steps li:last-child { border-bottom: none; }
+  .pipeline-steps li::before {
+    content: counter(steps);
+    position: absolute; left: 0;
+    font-size: 0.65rem; font-weight: 700;
+    color: rgba(255,255,255,0.35); top: 0.4rem;
+  }
+
+  /* ---- page footer ---- */
+  .page-footer {
+    text-align: center; padding: 2.5rem 1rem;
+    font-size: 0.82rem; color: var(--text-3);
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .page-footer a { color: var(--accent); text-decoration: none; }
+  .page-footer a:hover { text-decoration: underline; }
+
+  /* ---- no results ---- */
+  .no-results {
+    text-align: center; padding: 3rem 1rem;
+    color: var(--text-3); font-size: 0.9rem; display: none;
+  }
+
+  @media (max-width: 600px) {
+    .tools-list { grid-template-columns: 1fr; }
+    .pipeline-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="./index.html">← Borisusu</a>
+  <span class="nav-title">AI 제작 툴 도감</span>
+</nav>
+
+<section class="hero">
+  <span class="hero-kicker">AI Series · 01</span>
+  <h1>AI 제작 툴 도감</h1>
+  <p class="hero-sub" id="subtitle"></p>
+  <p class="hero-intro" id="intro"></p>
+</section>
+
+<section class="how-to">
+  <div class="how-to-inner">
+    <h2>이 도감을 쓰는 방법</h2>
+    <ol id="how-to-list"></ol>
+  </div>
+</section>
+
+<div class="controls">
+  <div class="search-wrap">
+    <input type="search" id="search" placeholder="툴 이름, 용도, 키워드로 검색…" autocomplete="off">
+  </div>
+  <div class="filters" id="filters"></div>
+</div>
+
+<div class="tool-grid">
+  <p class="no-results" id="no-results">검색 결과가 없습니다.</p>
+  <div id="categories"></div>
+</div>
+
+<section class="pipelines">
+  <div class="pipelines-inner">
+    <h2>작업별 추천 파이프라인</h2>
+    <p class="pipelines-sub">각 작업 유형에 맞는 단계별 툴 조합입니다.</p>
+    <div class="pipeline-grid" id="pipeline-grid"></div>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <p>Borisusu · AI 시리즈 &nbsp;·&nbsp; <a href="./index.html">포트폴리오로 돌아가기</a></p>
+</footer>
+
+<script>
+const DATA = {"title":"AI 제작 툴 도감","subtitle":"영상, 오디오, 3D, 디자인, 코딩, 오픈소스까지 작업 목적별로 찾아보는 AI 툴 맵","intro":"AI 툴은 모델명으로 외우는 것보다 '내가 어떤 작업을 하려는지'에 맞춰 분류해서 쓰는 것이 중요합니다. 이 페이지는 주요 툴과 모델을 실제 제작 흐름 기준으로 정리한 도감입니다.","howToUse":["먼저 내가 하려는 작업을 고릅니다.","해당 카테고리에서 추천 툴을 확인합니다.","한 번에 하나의 툴로 끝내려 하지 말고, 기획 → 생성 → 수정 → 검증 → 편집 순서로 조합합니다.","고가 모델을 바로 쓰기보다 빠르고 저렴한 모델 또는 로컬 모델로 먼저 테스트합니다."],"categories":[{"id":"video","name":"영상 생성·수정","description":"영상 AI는 생성에서 수정 가능성, 컷 조립, 캐릭터 유지, 사운드 결합까지 포함하는 제작 시스템으로 이동하고 있습니다.","tools":[{"name":"Seedance 2.0","use":"고퀄리티 영상 생성","example":"AI 아이돌 티저, 광고 컷, 무드 영상, 시네마틱 숏폼","recommendedFor":"영상 제작자, 광고 기획자, 크리에이터","memo":"움직임 표현이 중요한 컷에 적합"},{"name":"Kling / Kling 3.0","use":"시네마틱 영상 생성","example":"광고 시퀀스, 스토리보드 영상화, 미디어월 테스트","recommendedFor":"광고·영상 제작자, 미디어아트 기획자","memo":"영화적 무드와 카메라 움직임에 적합"},{"name":"Runway","use":"영상 생성, 영상 수정, AI 캐릭터 제작","example":"기존 영상 수정, AI 캐릭터 기반 영상, 숏폼 제작","recommendedFor":"크리에이터, 영상 편집자, AI 캐릭터 제작자","memo":"편집과 수정 워크플로우 관점에서 중요"},{"name":"Google Flow / Veo","use":"멀티모달 영상 제작","example":"이미지·텍스트 기반 영상 생성, 영상 시퀀스 구성","recommendedFor":"영상 제작자, 콘텐츠 기획자","memo":"Google 생태계 기반 영상 제작 흐름"},{"name":"Gemini Omni","use":"기존 영상을 이해하고 리믹스하는 멀티모달 영상 편집","example":"영상 속 사물 변경, 쇼츠 재활용","recommendedFor":"숏폼 제작자, 유튜브 크리에이터","memo":"새로 생성보다 기존 영상을 바꾸는 방향에서 중요"},{"name":"LTX-2.3","use":"오픈소스 영상 생성","example":"로컬 또는 ComfyUI 기반 영상 생성 실험","recommendedFor":"실험형 제작자, ComfyUI 사용자","memo":"비용 절감과 워크플로우 설계에 적합"},{"name":"Helios","use":"실시간 영상 생성","example":"인터랙티브 영상, 실시간 시각화","recommendedFor":"개발자, 연구자","memo":"실시간성과 반응성이 중요한 영상 실험"},{"name":"Descript","use":"스크립트 기반 영상·오디오 편집","example":"대본 수정으로 영상 대사 수정, 립싱크 편집","recommendedFor":"유튜버, 팟캐스터","memo":"영상 편집을 텍스트 편집처럼 다룸"},{"name":"Autopod","use":"팟캐스트 컷 편집 자동화","example":"멀티캠 팟캐스트 자동 컷 편집","recommendedFor":"팟캐스트 제작자","memo":"반복 컷 편집 시간 절감"},{"name":"Replit Animation / NotebookLM Cinematic Video","use":"설명형·교육형 영상 생성","example":"리포트 요약 영상, 교육 콘텐츠","recommendedFor":"교육자, 리서처, 콘텐츠 기획자","memo":"문서와 설명을 영상으로 바꾸는 흐름"},{"name":"ID-LoRA","use":"인물·캐릭터 일관성 유지","example":"같은 캐릭터 얼굴 유지, AI 아이돌 영상","recommendedFor":"캐릭터 제작자, AI 아이돌 기획자","memo":"캐릭터 기준 고정에 중요"},{"name":"PrismAudio","use":"무음 영상에 사운드 입히기","example":"AI 영상에 효과음, 공간음 추가","recommendedFor":"영상 제작자, 미디어아트 제작자","memo":"영상 완성도를 높이는 사운드 보강"},{"name":"Davinci-MagiHuman","use":"AI 휴먼·캐릭터 영상","example":"가상 인물 영상, 캐릭터 소개 영상","recommendedFor":"AI 캐릭터 제작자, 브랜드 콘텐츠 제작자","memo":"AI 휴먼/캐릭터 기반 영상 제작 후보"}]},{"id":"audio","name":"오디오·사운드","description":"오디오 AI는 TTS를 넘어 전사, 음질 개선, 효과음 생성, 음악 제작까지 확장되고 있습니다.","tools":[{"name":"ElevenLabs","use":"음성 합성","example":"AI 캐릭터 보이스, 내레이션, 광고 음성","recommendedFor":"영상 제작자, 캐릭터 콘텐츠 제작자","memo":"감정 표현이 있는 보이스 제작"},{"name":"Cohere Transcribe","use":"음성 전사","example":"음질이 좋지 않은 회의, 강의, 인터뷰 전사","recommendedFor":"리서처, 콘텐츠 편집자","memo":"음질이 낮은 자료 텍스트화"},{"name":"Voxtral TTS","use":"TTS","example":"내레이션, 캐릭터 음성","recommendedFor":"콘텐츠 제작자","memo":"음성 생성 후보군"},{"name":"TADA TTS","use":"TTS","example":"짧은 내레이션, 음성 콘텐츠","recommendedFor":"영상 제작자, 교육 콘텐츠 제작자","memo":"TTS 후보군"},{"name":"Fish Audio S2","use":"음성 생성","example":"캐릭터 보이스, 보이스 실험","recommendedFor":"AI 음성 제작자","memo":"음성 생성 후보군"},{"name":"Typecast","use":"한국어 보이스·TTS","example":"한국어 내레이션, 광고 음성","recommendedFor":"한국어 콘텐츠 제작자","memo":"한국어 음성 제작에 적합"},{"name":"LavaSR","use":"음질 개선","example":"저품질 음성 복원, 노이즈 개선","recommendedFor":"영상 편집자, 팟캐스트 제작자","memo":"후보정 단계에서 유용"},{"name":"Suno / BandLab","use":"음악 생성과 편집","example":"AI 아이돌 노래, BGM, 짧은 훅 제작","recommendedFor":"음악 제작자, 영상 제작자","memo":"음악 생성과 편집 조합"},{"name":"Artlist","use":"영상용 BGM/SFX 라이브러리","example":"광고 영상, 숏폼, 미디어월 사운드 보강","recommendedFor":"영상 편집자","memo":"최종 사운드 마감"}]},{"id":"segmentation","name":"객체 선택·분할","description":"이미지와 영상에서 특정 인물, 제품, 배경, 오브젝트를 분리하고 추적하는 데 쓰입니다.","tools":[{"name":"SAM 2","use":"이미지·영상 객체 분할","example":"영상 속 특정 인물 선택, 제품만 분리, 배경 제거","recommendedFor":"영상 합성 작업자, 디자이너","memo":"합성·마스크 작업 기본 도구"},{"name":"SAM 3","use":"프롬프트 기반 객체 탐지·분할·트래킹","example":"파란 가방만 선택, 움직이는 사람만 추적","recommendedFor":"영상 편집자, AI 합성 제작자","memo":"프롬프트 기반 객체 선택"},{"name":"SAM 3D","use":"단일 이미지 기반 3D 재구성","example":"이미지 속 오브젝트 3D화","recommendedFor":"3D 제작자, 게임·전시 기획자","memo":"객체 선택과 3D 제작의 접점"},{"name":"SegmentLens / sam3.ai 계열","use":"SAM 기반 객체 선택 서비스","example":"배경 제거, 제품 이미지 편집, 마스크 생성","recommendedFor":"비개발자 디자이너, 콘텐츠 제작자","memo":"서비스형 객체 선택 도구"}]},{"id":"3d-world","name":"3D·월드모델","description":"AI는 평면 이미지 생성에서 공간, 움직임, 물리 시뮬레이션으로 확장되고 있습니다.","tools":[{"name":"KiMoDo","use":"3D 모션 생성","example":"캐릭터 모션, 안무, 움직임 시뮬레이션","recommendedFor":"3D 제작자, AI 아이돌 기획자","memo":"캐릭터 움직임 생성/보정"},{"name":"Seoul World Model","use":"세계 시뮬레이션 모델","example":"도시, 공간, 환경 시뮬레이션","recommendedFor":"연구자, 미디어아트 제작자","memo":"월드모델 흐름"},{"name":"InSpatio / Matrix 3.0","use":"월드모델 탐험","example":"가상 공간 탐험, 인터랙티브 환경 실험","recommendedFor":"게임 기획자, 전시 기획자","memo":"공간 기반 AI 실험"},{"name":"Unity AI","use":"게임·인터랙티브 제작","example":"게임 오브젝트, 씬 구성","recommendedFor":"게임 개발자, 인터랙티브 콘텐츠 제작자","memo":"게임 제작과 AI 결합"},{"name":"Blender AI 연동","use":"3D 제작 보조","example":"모델링, 모션, 장면 구성 자동화","recommendedFor":"3D 아티스트, 영상 제작자","memo":"3D 작업 자동화"},{"name":"Autodesk Fusion 연동","use":"CAD·제품 디자인 자동화","example":"제품 구조 설계, 3D 모델링","recommendedFor":"제품 디자이너, 엔지니어","memo":"CAD/제품 설계"},{"name":"Meshy류","use":"이미지/텍스트 기반 3D 오브젝트 생성","example":"캐릭터 소품, 게임 오브젝트","recommendedFor":"3D 입문자, 게임·전시 제작자","memo":"빠른 3D 자산 생성"}]},{"id":"image-design","name":"이미지·그래픽·SVG","description":"이미지 AI는 브랜드 일관성, 캐릭터 시트, 제품 이미지, 벡터 그래픽 제작으로 확장되고 있습니다.","tools":[{"name":"Midjourney","use":"콘셉트 아트와 무드보드","example":"캐릭터 룩, 광고 무드, 포스터 비주얼","recommendedFor":"디자이너, 기획자, 아트 디렉터","memo":"스타일 탐색과 방향 설정"},{"name":"ChatGPT Images / GPT-Image-2","use":"이미지 생성·수정","example":"캐릭터 시트, 제품컷, 배경 수정","recommendedFor":"콘텐츠 제작자, 디자이너, 마케터","memo":"구체적 지시와 반복 수정"},{"name":"Adobe Firefly","use":"이미지 생성과 Adobe 제작툴 연동","example":"Photoshop 합성, Illustrator 그래픽","recommendedFor":"디자이너, 영상 편집자","memo":"상업 디자인 워크플로우 연결"},{"name":"QuiverAI Arrow","use":"SVG 생성","example":"아이콘, 로고, 벡터 패턴","recommendedFor":"브랜딩 디자이너, UI 디자이너","memo":"편집 가능한 벡터 그래픽"},{"name":"Nano Banana","use":"이미지 생성·수정 후보","example":"빠른 이미지 실험, 캐릭터 변형","recommendedFor":"AI 이미지 실험자","memo":"빠른 실험용 후보"},{"name":"Photoshop AI","use":"합성, 확장, 배경 제거, 후보정","example":"제품컷 보정, 최종 합성","recommendedFor":"디자이너, 콘텐츠 제작자","memo":"최종 보정용"}]},{"id":"ui-design","name":"디자인·카드뉴스·UI","description":"디자인 AI는 정적 파일에서 대화형 작업공간과 반복 가능한 브랜드 시스템으로 이동하고 있습니다.","tools":[{"name":"Canva AI 2.0","use":"카드뉴스, 제안서, SNS 콘텐츠 제작","example":"인스타 카드뉴스, 발표자료","recommendedFor":"마케터, 기획자, 1인 크리에이터","memo":"빠른 템플릿 기반 제작"},{"name":"Canva Code","use":"간단한 인터랙티브 콘텐츠 제작","example":"웹형 콘텐츠, 인터랙티브 카드","recommendedFor":"비개발자 기획자, 마케터","memo":"간단 인터랙티브 제작"},{"name":"Brand Intelligence","use":"브랜드 일관성 유지","example":"같은 톤의 카드뉴스, 브랜드 캠페인","recommendedFor":"브랜드 담당자, 디자이너","memo":"반복 산출물 제작"},{"name":"Figma AI / Figma MCP","use":"UI 제작과 디자인-코드 연결","example":"포트폴리오 UI, 웹앱 프로토타입","recommendedFor":"UI/UX 디자이너, 프론트엔드 개발자","memo":"디자인과 구현 연결"},{"name":"Figma Make / Figma Design Agent","use":"디자인 생성과 프로토타입 제작","example":"랜딩페이지, 앱 화면","recommendedFor":"디자이너, 프로덕트 기획자","memo":"디자인 에이전트 흐름"},{"name":"Claude Design","use":"디자인 초안, 제안서, 프로토타입 구조화","example":"카드뉴스 구조, 피치덱 초안","recommendedFor":"기획자, 디자이너","memo":"구조화와 초안 제작"},{"name":"Adobe Firefly AI Assistant","use":"Adobe 앱 기반 멀티스텝 제작","example":"이미지 보정, 영상 편집 보조","recommendedFor":"Adobe 사용자, 디자이너","memo":"전문 제작툴과 AI 연결"}]},{"id":"coding-agent","name":"코딩·에이전트 자동화","description":"코딩 AI는 코드 작성에서 파일 수정, 앱 제작, 툴 조작, 업무 자동화로 확장되고 있습니다.","tools":[{"name":"Claude Code","use":"코드 작성, 파일 수정, 리팩토링","example":"기존 웹사이트에 새 섹션 추가","recommendedFor":"개발자, 바이브 코딩 사용자","memo":"프로젝트 수정에 적합"},{"name":"Codex / Codex CLI","use":"코딩 에이전트","example":"구현, 테스트, 오류 수정","recommendedFor":"개발자, 자동화 작업자","memo":"구현과 검증"},{"name":"Cursor","use":"IDE 기반 AI 코딩","example":"프로젝트 내부 코드 수정, UI 컴포넌트 작성","recommendedFor":"프론트엔드 개발자, 앱 개발자","memo":"기존 코드베이스 수정"},{"name":"Antigravity","use":"에이전트형 개발 환경","example":"앱 제작, 코드 수정, 개발 작업 자동화","recommendedFor":"개발자, Google AI 생태계 사용자","memo":"개발환경의 에이전트 허브화"},{"name":"Google AI Studio","use":"풀스택 바이브 코딩","example":"웹앱, Android 앱, 프로토타입 제작","recommendedFor":"앱 제작자, 비개발자 기획자, 개발자","memo":"빠른 앱 제작 흐름"},{"name":"Stitch","use":"UI/앱 생성","example":"빠른 UI 초안, 웹앱 구조 생성","recommendedFor":"디자이너, 기획자, 개발자","memo":"UI 초안"},{"name":"OpenClaw","use":"자율 작업 에이전트","example":"파일 생성, 편집, 반복 업무 자동화","recommendedFor":"자동화 실험자, 개발자","memo":"권한 관리 필요"},{"name":"MCP","use":"에이전트와 툴 연결 표준","example":"파일, 브라우저, 디자인툴, DB 연결","recommendedFor":"개발자, 에이전트 설계자","memo":"툴 연결 핵심 개념"},{"name":"LangGraph","use":"에이전트 워크플로우 오케스트레이션","example":"여러 단계의 AI 작업 흐름 설계","recommendedFor":"개발자, AI 워크플로우 설계자","memo":"복잡한 플로우 설계"},{"name":"Adobe 제어 MCP","use":"Adobe 툴 자동 조작","example":"Photoshop, Illustrator, Premiere 자동화","recommendedFor":"디자이너, 영상 편집자","memo":"전문 제작툴 자동화"},{"name":"Atom / tryatom.ai","use":"모션그래픽·After Effects 보조","example":"레이어, 프레임, 컴포지션 단위 애니메이션","recommendedFor":"모션그래픽 디자이너, 영상 제작자","memo":"모션그래픽 자동화 후보"}]},{"id":"opensource-local","name":"오픈소스·로컬 실행·효율화","description":"오픈소스와 로컬 실행은 반복 테스트 비용을 줄이고 제작 파이프라인을 통제하는 방법입니다.","tools":[{"name":"Hugging Face","use":"오픈소스 모델 탐색","example":"영상, 이미지, LLM, 음성 모델 찾기","recommendedFor":"AI 제작자, 개발자, 연구자","memo":"모델 탐색 기본 플랫폼"},{"name":"ComfyUI","use":"노드 기반 생성 워크플로우 설계","example":"이미지·영상 일관성 유지, 최신 모델 테스트","recommendedFor":"AI 이미지·영상 제작자","memo":"반복 가능한 파이프라인"},{"name":"Comfy Cloud","use":"ComfyUI 클라우드 실행","example":"고사양 GPU 없이 최신 모델 실행","recommendedFor":"로컬 GPU가 부족한 제작자","memo":"클라우드 실행 대안"},{"name":"LTX-2.3 ComfyUI workflows","use":"오픈소스 영상 생성 워크플로우","example":"로컬/클라우드 기반 영상 생성 실험","recommendedFor":"ComfyUI 사용자, AI 영상 실험자","memo":"오픈소스 영상 워크플로우"},{"name":"llmfit","use":"내 PC 사양에 맞는 LLM 추천","example":"RAM/GPU 기준 실행 가능한 모델 선택","recommendedFor":"로컬 AI 입문자","memo":"모델 선택 보조"},{"name":"CanIRun.ai","use":"모델 실행 가능성 판단","example":"특정 모델이 내 컴퓨터에서 돌아가는지 확인","recommendedFor":"로컬 AI 사용자","memo":"하드웨어 적합성 확인"},{"name":"Ollama","use":"로컬 LLM 실행","example":"개인 PC에서 LLM 테스트","recommendedFor":"개발자, 로컬 AI 입문자","memo":"로컬 LLM 입문"},{"name":"llama.cpp","use":"경량 로컬 추론","example":"CPU/GPU 기반 LLM 실행","recommendedFor":"개발자, 모델 최적화 사용자","memo":"경량 추론"},{"name":"LM Studio","use":"로컬 LLM GUI 실행","example":"모델 다운로드, 채팅 테스트","recommendedFor":"비개발자 로컬 AI 사용자","memo":"GUI 기반 로컬 실행"},{"name":"MLX","use":"Apple Silicon 기반 로컬 모델 실행","example":"Mac에서 로컬 LLM 테스트","recommendedFor":"Mac 사용자","memo":"Apple Silicon 최적화"},{"name":"vLLM / SGLang","use":"고성능 모델 서빙","example":"API 서버, 대규모 추론","recommendedFor":"개발자, 연구자, 서버 운영자","memo":"서버 추론용"},{"name":"모델 성능 리더보드","use":"모델 비교","example":"성능, 가격, 속도 기준 모델 선택","recommendedFor":"모델 선택이 필요한 제작자와 개발자","memo":"모델 선택 전 참고"}]}],"pipelines":[{"title":"AI 아이돌 티저 영상 만들기","steps":["세계관과 캐릭터 콘셉트 정리","Midjourney 또는 ChatGPT Images로 키비주얼 생성","캐릭터 시트와 표정 시트 제작","ID-LoRA 또는 동일 레퍼런스로 캐릭터 일관성 확보","Seedance, Kling, Runway로 5–10초 컷 생성","ElevenLabs, Typecast, Suno로 보이스와 음악 제작","PrismAudio 또는 Artlist로 사운드 보강","CapCut, Premiere, After Effects로 편집","최종 컷을 체크리스트로 검수"]},{"title":"미디어월 영상 만들기","steps":["원본 이미지 또는 작품 레퍼런스 수집","파노라마 확장 또는 배경 생성","장면을 5–10초 루프 단위로 분리","Kling, Seedance, Veo, Runway로 컷 테스트","실패한 컷은 다른 모델로 우회","PrismAudio, Artlist로 공간감 있는 사운드 추가","After Effects에서 루프, 색보정, 출력 비율 조정","실제 디스플레이 비율에 맞춰 테스트"]},{"title":"카드뉴스 만들기","steps":["ChatGPT 또는 Claude로 리포트 요약","핵심 메시지를 카드별로 분리","Midjourney 또는 ChatGPT Images로 키비주얼 제작","QuiverAI로 아이콘과 SVG 그래픽 생성","Canva 또는 Figma에서 카드 레이아웃 구성","사람 눈으로 사실 정보와 문장 길이 검수","SNS 업로드용 비율로 내보내기"]},{"title":"포트폴리오 사이트 만들기","steps":["포트폴리오 구조와 섹션 기획","Figma 또는 Claude Design으로 UI 초안 제작","Claude Code, Codex, Cursor로 구현","기존 사이트 구조에 맞춰 컴포넌트화","모바일 반응형 확인","Lighthouse 또는 브라우저 테스트","최종 문구와 이미지 검수"]},{"title":"로컬 모델 실행하기","steps":["Hugging Face에서 모델 후보 찾기","llmfit 또는 CanIRun.ai로 내 PC 사양 확인","Ollama, LM Studio, llama.cpp 중 실행 방식 선택","작은 모델로 먼저 테스트","필요하면 ComfyUI 또는 Comfy Cloud로 확장","반복 작업은 로컬 모델로 분산해 비용 절감"]}]};
+
+document.getElementById('subtitle').textContent = DATA.subtitle;
+document.getElementById('intro').textContent = DATA.intro;
+
+// how-to
+const howToList = document.getElementById('how-to-list');
+DATA.howToUse.forEach(step => {
+  const li = document.createElement('li');
+  li.textContent = step;
+  howToList.appendChild(li);
+});
+
+// category filters
+const filtersEl = document.getElementById('filters');
+const allBtn = document.createElement('button');
+allBtn.className = 'filter-btn active';
+allBtn.textContent = '전체';
+allBtn.dataset.cat = 'all';
+filtersEl.appendChild(allBtn);
+DATA.categories.forEach(cat => {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn';
+  btn.textContent = cat.name;
+  btn.dataset.cat = cat.id;
+  filtersEl.appendChild(btn);
+});
+
+// render categories
+const catContainer = document.getElementById('categories');
+DATA.categories.forEach(cat => {
+  const block = document.createElement('div');
+  block.className = 'category-block';
+  block.dataset.catId = cat.id;
+
+  const header = document.createElement('div');
+  header.className = 'cat-header';
+  header.innerHTML = `<span class="cat-name">${cat.name}</span><span class="cat-count">${cat.tools.length}개</span>`;
+  block.appendChild(header);
+
+  const desc = document.createElement('p');
+  desc.className = 'cat-desc';
+  desc.textContent = cat.description;
+  block.appendChild(desc);
+
+  const list = document.createElement('div');
+  list.className = 'tools-list';
+  cat.tools.forEach(tool => {
+    const card = document.createElement('div');
+    card.className = 'tool-card';
+    card.dataset.search = [tool.name, tool.use, tool.example, tool.recommendedFor, tool.memo].join(' ').toLowerCase();
+    card.innerHTML = `
+      <div class="tool-name">${tool.name}</div>
+      <div class="tool-use">${tool.use}</div>
+      <div class="tool-example">예: ${tool.example}</div>
+      <div class="tool-meta">
+        <span class="chip chip-for">→ ${tool.recommendedFor}</span>
+        <span class="chip chip-memo">${tool.memo}</span>
+      </div>`;
+    list.appendChild(card);
+  });
+  block.appendChild(list);
+  catContainer.appendChild(block);
+});
+
+// pipelines
+const pipelineGrid = document.getElementById('pipeline-grid');
+DATA.pipelines.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'pipeline-card';
+  const stepsHtml = p.steps.map(s => `<li>${s}</li>`).join('');
+  card.innerHTML = `<div class="pipeline-title">${p.title}</div><ol class="pipeline-steps">${stepsHtml}</ol>`;
+  pipelineGrid.appendChild(card);
+});
+
+// filter + search
+let activeCat = 'all';
+
+function applyFilter() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  let anyVisible = false;
+  document.querySelectorAll('.category-block').forEach(block => {
+    const catId = block.dataset.catId;
+    const catMatch = activeCat === 'all' || activeCat === catId;
+    if (!catMatch) { block.classList.add('hidden'); return; }
+    block.classList.remove('hidden');
+    let blockHasVisible = false;
+    block.querySelectorAll('.tool-card').forEach(card => {
+      const match = !q || card.dataset.search.includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) { blockHasVisible = true; anyVisible = true; }
+    });
+    block.classList.toggle('hidden', !blockHasVisible);
+  });
+  document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
+}
+
+document.getElementById('search').addEventListener('input', applyFilter);
+filtersEl.addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  activeCat = btn.dataset.cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+  applyFilter();
+});
+</script>
+</body>
+</html>

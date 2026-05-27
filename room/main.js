@@ -72,7 +72,7 @@ const avoidZones = env.projectMounts.map(p => ({ x: p.position.x, z: p.position.
 avoidZones.push({ x: 0, z: -ROOM.depth / 2 + 4.3, r: 6 });
 
 const wanderer = new CharacterWanderer(character, {
-  bounds: { minX: -10, maxX: 10, minZ: -10, maxZ: 11 },
+  bounds: { minX: -10, maxX: 10, minZ: -10, maxZ: 13 },
   avoidZones,
   speed: 0.55
 });
