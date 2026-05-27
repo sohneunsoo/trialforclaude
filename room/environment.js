@@ -7,10 +7,10 @@ import {
   makeBillboardTexture
 } from './textures.js';
 
-// Room dimensions (units = ~decimeters; ~28 x 22)
+// Room dimensions (units = ~decimeters; ~28 x 28)
 export const ROOM = {
   width: 28,
-  depth: 22,
+  depth: 28,
   wallH: 3.6,
   outerThick: 0.5,
   chromeH: 1.6 // title bar height (sits above the back wall)

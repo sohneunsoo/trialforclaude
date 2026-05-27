@@ -72,7 +72,7 @@ const avoidZones = env.projectMounts.map(p => ({ x: p.position.x, z: p.position.
 avoidZones.push({ x: 0, z: -ROOM.depth / 2 + 4.3, r: 6 });
 
 const wanderer = new CharacterWanderer(character, {
-  bounds: { minX: -10, maxX: 10, minZ: -6, maxZ: 7 },
+  bounds: { minX: -10, maxX: 10, minZ: -10, maxZ: 7 },
   avoidZones,
   speed: 0.55
 });
@@ -247,8 +247,8 @@ function updateMouse(dt) {
   const halfW = ROOM.width / 2 - 1.2;
   const halfD = ROOM.depth / 2 - 1.2;
   mouse.position.x = THREE.MathUtils.clamp(mouse.position.x, -halfW, halfW);
-  // keep mouse out of the dark footer band & hero platform
-  mouse.position.z = THREE.MathUtils.clamp(mouse.position.z, -halfD + 8.6, halfD - 3.2);
+  // keep mouse out of the dark footer band; allow full back hero zone
+  mouse.position.z = THREE.MathUtils.clamp(mouse.position.z, -halfD + 1.5, halfD - 3.2);
 
   mouse.position.y = 0.05; // ride on the floor surface
 
