@@ -68,7 +68,7 @@ export function buildEnvironment(scene) {
 
   // back wall (full height)
   const backWall = new THREE.Mesh(
-    new THREE.BoxGeometry(ROOM.width, ROOM.wallH, ROOM.outerThick),
+    new THREE.BoxGeometry(ROOM.width + ROOM.outerThick * 2, ROOM.wallH, ROOM.outerThick),
     wMat
   );
   backWall.position.set(0, ROOM.wallH / 2, -halfD - ROOM.outerThick / 2 + 0.001);
@@ -81,8 +81,8 @@ export function buildEnvironment(scene) {
     const shape = new THREE.Shape();
     shape.moveTo(0, 0);
     shape.lineTo(ROOM.depth, 0);
-    shape.lineTo(ROOM.depth, 0.6); // front edge low
-    shape.lineTo(0, ROOM.wallH);   // back edge tall
+    shape.lineTo(ROOM.depth, 0.6);
+    shape.lineTo(0, ROOM.wallH);
     shape.lineTo(0, 0);
     const geom = new THREE.ExtrudeGeometry(shape, { depth: ROOM.outerThick, bevelEnabled: false });
     const mesh = new THREE.Mesh(geom, sideWallMat);
@@ -787,9 +787,9 @@ function buildWindowFrame(group, halfW, halfD) {
   const frameY = -0.15;
   const mat = whiteMatte({ color: '#aecde0' });
 
-  // top edge (back) — thicker, since this also becomes the chrome shelf base
+  // top edge (back) — capped to room width to avoid back-corner protrusion
   const top = new THREE.Mesh(
-    new THREE.BoxGeometry(ROOM.width + frameThickness * 2 + 1.0, frameRise, frameThickness + 0.4),
+    new THREE.BoxGeometry(ROOM.width - 0.2, frameRise, frameThickness + 0.4),
     mat
   );
   top.position.set(0, frameY + frameRise / 2, -halfD - frameThickness / 2 - 0.2);
@@ -805,7 +805,7 @@ function buildWindowFrame(group, halfW, halfD) {
   bottom.castShadow = true; bottom.receiveShadow = true;
   group.add(bottom);
 
-  // left edge — trimmed so it stops at back wall (no protrusion behind title bar)
+  // left edge
   const left = new THREE.Mesh(
     new THREE.BoxGeometry(frameThickness, frameRise, ROOM.depth + frameThickness * 2 - 0.4),
     mat
@@ -825,7 +825,7 @@ function buildWindowFrame(group, halfW, halfD) {
 function buildChrome(group, halfW, halfD) {
   const chromeY = ROOM.wallH + ROOM.chromeH / 2 + 0.05;
   const chromeZ = -halfD - 0.05; // flush with back wall
-  const barW = ROOM.width + 1.2;
+  const barW = ROOM.width - 0.2; // trimmed to stay within side walls
 
   // base slab (the title bar body)
   const slab = new THREE.Mesh(
