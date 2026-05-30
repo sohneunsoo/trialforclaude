@@ -81,7 +81,7 @@ export function buildEnvironment(scene) {
     shape.moveTo(0, 0);
     shape.lineTo(ROOM.depth, 0);
     shape.lineTo(ROOM.depth, 0.6);
-    shape.lineTo(0, 0.6);
+    shape.lineTo(0, ROOM.wallH);
     shape.lineTo(0, 0);
     const geom = new THREE.ExtrudeGeometry(shape, { depth: ROOM.outerThick, bevelEnabled: false });
     const mesh = new THREE.Mesh(geom, whiteMatte({ color: '#aecde0' }));
