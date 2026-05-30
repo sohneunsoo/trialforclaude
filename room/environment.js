@@ -10,7 +10,7 @@ import {
 // Room dimensions (units = ~decimeters; ~26 x 32)
 export const ROOM = {
   width: 26,
-  depth: 26,
+  depth: 28,
   wallH: 3.6,
   outerThick: 0.5,
   chromeH: 1.6 // title bar height (sits above the back wall)
@@ -290,7 +290,7 @@ export function buildEnvironment(scene) {
       new THREE.BoxGeometry(ROOM.width, footerH, 2.6),
       darkMatte({ color: '#0d0d10' })
     );
-    footer.position.set(0, footerH / 2, halfD - 0.5);
+    footer.position.set(0, footerH / 2, halfD - 0.8);
     footer.receiveShadow = true; footer.castShadow = true;
     group.add(footer);
 
@@ -299,7 +299,7 @@ export function buildEnvironment(scene) {
       new THREE.MeshStandardMaterial({ map: tex, roughness: 0.7 })
     );
     top.rotation.x = -Math.PI / 2;
-    top.position.set(0, footerH + 0.001, halfD - 0.5);
+    top.position.set(0, footerH + 0.001, halfD - 0.8);
     group.add(top);
   }
 
@@ -310,7 +310,7 @@ export function buildEnvironment(scene) {
   // Left column = section heading; right = flat 3D form card.
   // ============================================================
   {
-    const secZ0    = 8.5;   // natural gap before footer — not touching
+    const secZ0    = 9.5;   // natural gap before footer — not touching
     const secDepth = 2.4;
     const secZc    = secZ0 + secDepth / 2;
     const secW     = ROOM.width - 1.0;  // ~27 units wide
