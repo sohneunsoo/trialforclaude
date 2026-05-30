@@ -179,6 +179,20 @@
 </style>
 </head>
 <body>
+<a href="https://portfolio-room-peach.vercel.app" style="
+  position:fixed; top:28px; right:32px; z-index:999;
+  background:#0d0d0d; color:#fff;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:22px; font-weight:700; letter-spacing:0.06em;
+  padding:22px 44px; border-radius:999px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.35);
+  text-decoration:none;
+  display:flex; align-items:center; gap:14px;
+  transition:transform 0.15s,box-shadow 0.15s;
+" onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 12px 48px rgba(0,0,0,0.45)'"
+   onmouseout="this.style.transform='';this.style.boxShadow='0 8px 40px rgba(0,0,0,0.35)'">
+  ← 메인페이지로 돌아가기
+</a>
 
 <nav class="site-nav">
   <a href="./index.html">← Borisusu</a>
@@ -246,6 +260,24 @@
     <p class="prompt-example-label">예시 프롬프트</p>
     <div class="prompt-example" id="prompt-example"></div>
   </div>
+  <a href="./prompt-archive.html" style="
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:1.4rem;
+    background:var(--accent-light);
+    border:1px solid rgba(139,95,216,0.25);
+    border-radius:var(--radius);
+    padding:1rem 1.2rem;
+    text-decoration:none;
+    transition:box-shadow 0.2s;
+  " onmouseover="this.style.boxShadow='0 4px 16px rgba(139,95,216,0.15)'"
+     onmouseout="this.style.boxShadow='none'">
+    <div>
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;">AI·3</div>
+      <div style="font-size:0.95rem;font-weight:700;color:var(--primary);">프롬프트 아카이브 보러 가기</div>
+      <div style="font-size:0.8rem;color:var(--text-2);margin-top:2px;">영상·이미지·디자인·음악·AI 워크플로우 프롬프트 모음. 검색·복사 가능.</div>
+    </div>
+    <span style="font-size:1.1rem;color:var(--accent);margin-left:12px;">→</span>
+  </a>
 </div>
 
 <section class="core-msg">
@@ -255,7 +287,7 @@
 </section>
 
 <footer class="page-footer">
-  <p>Borisusu · AI 시리즈 &nbsp;·&nbsp; <a href="./ai-tool-map.html">AI 툴 도감 보기</a> &nbsp;·&nbsp; <a href="./index.html">포트폴리오로 돌아가기</a></p>
+  <p>Borisusu · AI 시리즈 &nbsp;·&nbsp; <a href="./ai-tool-map.html">AI 툴 도감</a> &nbsp;·&nbsp; <a href="./prompt-archive.html">프롬프트 아카이브</a> &nbsp;·&nbsp; <a href="./index.html">포트폴리오로 돌아가기</a></p>
 </footer>
 
 <script>
@@ -345,5 +377,6 @@ document.getElementById('prompt-example').textContent = DATA.promptWritingTips.e
 // core message
 document.getElementById('core-message').textContent = DATA.coreMessage;
 </script>
+<script src="./return-timer.js"></script>
 </body>
 </html>

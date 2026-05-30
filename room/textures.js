@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 // Generate a striped placeholder texture with a label, for project art.
-export function makePlaceholderTexture(label, tone = "#dcd7cc", accent = "#444") {
+export function makePlaceholderTexture(label, tone = "#dcd7cc", accent = "#444", wip = false) {
   const c = document.createElement('canvas');
   c.width = 512; c.height = 384;
   const g = c.getContext('2d');
@@ -40,6 +40,28 @@ export function makePlaceholderTexture(label, tone = "#dcd7cc", accent = "#444")
   // accent corner mark
   g.fillStyle = accent;
   g.fillRect(c.width - 56, 24, 32, 6);
+
+  // WIP stamp
+  if (wip) {
+    g.save();
+    g.translate(c.width / 2, c.height / 2);
+    g.rotate(-Math.PI / 12);
+    // bold dark badge
+    g.fillStyle = 'rgba(0,0,0,0.82)';
+    const bw = 480, bh = 110;
+    g.fillRect(-bw / 2, -bh / 2, bw, bh);
+    // yellow border
+    g.strokeStyle = '#ffdd57';
+    g.lineWidth = 5;
+    g.strokeRect(-bw / 2 + 6, -bh / 2 + 6, bw - 12, bh - 12);
+    // text
+    g.fillStyle = '#ffdd57';
+    g.font = '900 72px "Helvetica Neue", Helvetica, Arial, sans-serif';
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.fillText('포폴 공사중 🚧', 0, 0);
+    g.restore();
+  }
 
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
@@ -130,7 +152,7 @@ export function makeHeroPlateTexture() {
   g.fillRect(80, 820, 280, 78);
   g.fillStyle = '#fff';
   g.font = '600 26px "Helvetica Neue", Helvetica, Arial, sans-serif';
-  g.fillText('WORK 보기  →', 110, 870);
+  g.fillText('작업 보기  →', 110, 870);
 
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
@@ -248,7 +270,7 @@ export function makeBillboardTexture() {
     gg.textBaseline = 'middle';
     gg.fillText('LIVE · CH 01 · BORISUSU.TV', 104, h - 28);
     gg.textAlign = 'right';
-    gg.fillText('1080p · 60FPS', w - 64, h - 28);
+    gg.fillText('실시간 · 60FPS', w - 64, h - 28);
     gg.textAlign = 'left';
 
     // scanline overlay
@@ -384,8 +406,8 @@ export function makeFooterTexture() {
 
   g.fillStyle = '#f4f1e9';
   g.font = '500 72px "Cormorant Garamond", "Times New Roman", serif';
-  g.fillText('WHAT DO', 56, 110);
-  g.fillText('YOU SAY?', 56, 196);
+  g.fillText('연락은', 56, 110);
+  g.fillText('언제든지!', 56, 196);
 
   // divider
   g.strokeStyle = 'rgba(255,255,255,0.25)';

@@ -33,17 +33,18 @@
   .hud-tr span::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: rgba(0,0,0,0); }
 
   .hud-bl {
-    bottom: 22px; left: 26px; font-size: 10.5px; letter-spacing: 0.18em; color: #444;
-    display: flex; gap: 22px; align-items: center;
+    top: 22px; left: 50%; transform: translateX(-50%);
+    font-size: 18px; letter-spacing: 0.14em; color: #111;
+    display: flex; gap: 32px; align-items: center;
   }
   .key {
     display: inline-flex; align-items: center; justify-content: center;
-    min-width: 22px; height: 22px; padding: 0 6px;
-    border: 1px solid rgba(0,0,0,0.35); border-radius: 4px;
-    background: rgba(255,255,255,0.55); backdrop-filter: blur(6px);
-    font-size: 10px; letter-spacing: 0; margin: 0 2px; font-family: var(--sans); font-weight: 600;
+    min-width: 36px; height: 36px; padding: 0 10px;
+    border: 1.5px solid rgba(0,0,0,0.4); border-radius: 6px;
+    background: rgba(255,255,255,0.75); backdrop-filter: blur(8px);
+    font-size: 15px; letter-spacing: 0; margin: 0 2px; font-family: var(--sans); font-weight: 700;
   }
-  .key.wide { padding: 0 10px; }
+  .key.wide { padding: 0 14px; }
 
   .hud-br {
     bottom: 22px; right: 26px; font-size: 10px; letter-spacing: 0.22em; color: #555;
@@ -123,6 +124,51 @@
     color: rgba(255,255,255,0.9);
     background: rgba(0,0,0,0.4); padding: 6px 10px; border-radius: 4px;
   }
+
+  /* --- Gallery slider inside overlay art area --- */
+  .ov-art.gallery-mode {
+    aspect-ratio: unset; background: #111;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .gallery-track-wrap {
+    flex: 1; overflow: hidden; position: relative;
+  }
+  .gallery-track {
+    display: flex; height: 100%;
+    transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+  }
+  .gallery-track img {
+    flex-shrink: 0; width: 100%; height: 100%;
+    object-fit: contain; object-position: center;
+    pointer-events: none; user-select: none;
+  }
+  .gallery-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 14px; background: rgba(0,0,0,0.55);
+    flex-shrink: 0;
+  }
+  .gallery-btn {
+    background: none; border: 1px solid rgba(255,255,255,0.25);
+    color: #fff; border-radius: 999px;
+    width: 28px; height: 28px; cursor: pointer;
+    font-size: 14px; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .gallery-btn:hover { background: rgba(255,255,255,0.15); }
+  .gallery-btn:disabled { opacity: 0.28; cursor: default; }
+  .gallery-counter {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px; letter-spacing: 0.14em; color: rgba(255,255,255,0.6);
+  }
+  .gallery-dots {
+    display: flex; gap: 5px; align-items: center;
+  }
+  .gallery-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(255,255,255,0.3); cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .gallery-dot.active { background: #fff; transform: scale(1.3); }
   .ov-meta .num {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 13px; letter-spacing: 0.18em; color: var(--muted); margin-bottom: 14px;
@@ -155,6 +201,118 @@
     font-size: 11px; letter-spacing: 0.18em; color: #666;
   }
   .ov-bottom .esc { display: inline-flex; align-items: center; gap: 8px; }
+
+  /* --- Embed iframe overlay --- */
+  #embed-overlay {
+    position: fixed; inset: 0; z-index: 20;
+    background: #0a0a0a;
+    transform: translateY(100%);
+    transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+    display: flex; flex-direction: column;
+  }
+  #embed-overlay.open { transform: translateY(0); }
+  #embed-overlay .embed-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 28px;
+    background: #111;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    flex-shrink: 0;
+  }
+  #embed-overlay .embed-title {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px; letter-spacing: 0.26em; color: #666;
+  }
+  #embed-overlay .embed-title b { color: #bbb; }
+  #embed-back-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; color: #0d0d0d;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 15px; font-weight: 700; letter-spacing: 0.05em;
+    padding: 10px 22px; border-radius: 999px;
+    text-decoration: none;
+    transition: transform 0.15s, background 0.15s;
+    flex-shrink: 0;
+  }
+  #embed-back-btn:hover { background: #e8e4db; transform: scale(1.04); }
+  /* embed inactivity warning banner */
+  #embed-warn {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+    background: rgba(20,20,20,0.96); backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+    transform: translateY(100%); transition: transform 0.35s ease;
+    pointer-events: none;
+  }
+  #embed-warn.show { transform: translateY(0); pointer-events: all; }
+  #embed-warn .warn-text {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px; color: #ccc; letter-spacing: 0.04em;
+  }
+  #embed-warn .warn-text b { color: #ffdd57; font-size: 18px; }
+  #embed-warn-stay {
+    background: #fff; color: #0d0d0d;
+    border: none; border-radius: 999px;
+    padding: 10px 24px; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; cursor: pointer; flex-shrink: 0;
+  }
+  #embed-overlay .embed-body {
+    flex: 1; display: flex; overflow: hidden; min-height: 0;
+  }
+  #embed-overlay .embed-main {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    background: #0a0a0a; overflow: hidden;
+  }
+  #embed-overlay iframe {
+    border: none; background: #0a0a0a;
+    width: 100%; height: 100%;
+  }
+  /* Vertical video (Shorts) — constrain width to 9:16 */
+  #embed-overlay .embed-main.vertical iframe {
+    width: auto; height: 100%; aspect-ratio: 9/16; max-width: 100%;
+  }
+  /* QR side panel */
+  #embed-overlay .embed-side {
+    width: 240px; flex-shrink: 0;
+    background: #141414;
+    border-left: 1px solid rgba(255,255,255,0.07);
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 32px 24px; gap: 22px; text-align: center;
+  }
+  #embed-overlay .embed-side.show { display: flex; }
+  #embed-overlay .embed-side .qr-wrap {
+    background: #fff; border-radius: 10px;
+    padding: 10px; line-height: 0;
+  }
+  #embed-overlay .embed-side .qr-wrap img { display: block; width: 160px; height: 160px; }
+  #embed-overlay .embed-side .qr-label {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: #888; line-height: 1.7;
+  }
+  #embed-overlay .embed-side .qr-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: #ff0000; color: #fff;
+    border-radius: 999px; padding: 7px 14px;
+    font-size: 11px; letter-spacing: 0.12em; font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* --- URL transition flash --- */
+  #nav-flash {
+    position: fixed; inset: 0; z-index: 100;
+    background: #0d0d0d;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #nav-flash.on { opacity: 1; pointer-events: all; }
+  #nav-flash .nf-label {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px; letter-spacing: 0.3em; color: rgba(255,255,255,0.5);
+  }
 
   /* --- Loading screen --- */
   #boot {
@@ -221,6 +379,128 @@
     border: 1px solid rgba(0,0,0,0.08);
   }
 
+  /* --- Guestbook overlay --- */
+  #gb-overlay {
+    position: fixed; inset: 0; z-index: 15;
+    background: #f0ece3;
+    transform: translateY(100%);
+    transition: transform 560ms cubic-bezier(0.7, 0, 0.2, 1);
+    overflow: hidden;
+  }
+  #gb-overlay.open { transform: translateY(0); }
+  .gb-frame { height: 100%; display: flex; flex-direction: column; }
+  .gb-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 36px; border-bottom: 1px solid rgba(0,0,0,0.09);
+    flex-shrink: 0; background: #e9e4d8;
+  }
+  .gb-title-row { display: flex; align-items: center; gap: 14px; }
+  .gb-heading { font-family: var(--serif); font-size: 34px; line-height: 1; letter-spacing: -0.01em; }
+  .gb-sub { font-size: 10px; letter-spacing: 0.28em; color: #999; margin-top: 4px; }
+  .gb-body {
+    flex: 1; overflow: hidden; display: grid;
+    grid-template-columns: 300px 1fr;
+  }
+  .gb-form-area {
+    border-right: 1px solid rgba(0,0,0,0.08);
+    padding: 28px 24px;
+    background: #e9e4d8;
+    display: flex; flex-direction: column; gap: 18px;
+    overflow-y: auto;
+  }
+  .gb-cork-label {
+    font-size: 10px; letter-spacing: 0.24em; color: #9a8b6a;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .gb-sticky-pad {
+    background: #fffde0;
+    border-radius: 3px;
+    padding: 20px 18px 14px;
+    box-shadow: 2px 5px 18px rgba(0,0,0,0.14), 0 0 0 0.5px rgba(0,0,0,0.05);
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+  }
+  .gb-sticky-pad::before {
+    content: ""; position: absolute; top: -5px; left: 50%;
+    transform: translateX(-50%);
+    width: 44px; height: 10px;
+    background: rgba(0,0,0,0.15); border-radius: 2px;
+  }
+  .gb-sticky-pad input {
+    border: none; background: transparent;
+    font-family: var(--sans); font-size: 13px; color: var(--ink);
+    outline: none; width: 100%;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+    padding: 2px 0 8px; line-height: 1.5;
+  }
+  .gb-sticky-pad textarea {
+    border: none; background: transparent;
+    font-family: var(--sans); font-size: 14px; color: var(--ink);
+    outline: none; resize: none; width: 100%;
+    padding: 6px 0 4px; line-height: 1.6;
+    min-height: 90px;
+  }
+  .gb-sticky-pad input::placeholder,
+  .gb-sticky-pad textarea::placeholder { color: #c0b888; }
+  .gb-form-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.09);
+    margin-top: 2px;
+  }
+  .gb-char-count {
+    font-family: ui-monospace, monospace;
+    font-size: 11px; color: #aaa; letter-spacing: 0.04em;
+  }
+  #gb-submit {
+    background: #1a1a1a; color: #fff; border: none; border-radius: 999px;
+    padding: 9px 18px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+    cursor: pointer; font-family: var(--sans);
+    transition: background 0.15s, transform 0.1s;
+  }
+  #gb-submit:hover:not(:disabled) { background: #333; transform: scale(1.04); }
+  #gb-submit:disabled { opacity: 0.55; cursor: default; }
+  .gb-hint {
+    font-size: 11px; color: #b0a888; letter-spacing: 0.04em; line-height: 1.7;
+    padding: 0 2px;
+  }
+  .gb-notes {
+    overflow-y: auto; padding: 28px 28px;
+    display: flex; flex-wrap: wrap; gap: 16px;
+    align-content: flex-start; align-items: flex-start;
+  }
+  .gb-note {
+    padding: 14px 13px 10px;
+    border-radius: 2px;
+    width: calc(20% - 13px); min-width: 110px;
+    box-shadow: 2px 3px 10px rgba(0,0,0,0.13), 0 0 0 0.5px rgba(0,0,0,0.04);
+    display: flex; flex-direction: column; gap: 8px;
+    position: relative; transition: box-shadow 0.18s;
+  }
+  .gb-note:hover {
+    box-shadow: 4px 6px 22px rgba(0,0,0,0.2);
+    z-index: 2;
+  }
+  .gb-note::before {
+    content: ""; position: absolute; top: -4px; left: 50%;
+    transform: translateX(-50%);
+    width: 28px; height: 7px;
+    background: rgba(0,0,0,0.12); border-radius: 2px;
+  }
+  .gn-msg { font-size: 13px; line-height: 1.55; color: #2a2420; word-break: break-word; }
+  .gn-meta { font-size: 10px; letter-spacing: 0.06em; color: rgba(0,0,0,0.35); margin-top: 2px; }
+  .gn-name { font-weight: 600; color: rgba(0,0,0,0.5); }
+  .gb-empty {
+    width: 100%; text-align: center; padding: 80px 20px;
+    font-size: 13px; color: #bbb; letter-spacing: 0.1em;
+    line-height: 2; font-family: ui-monospace, monospace;
+  }
+  @media (max-width: 860px) {
+    .gb-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    .gb-form-area { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.08); padding: 20px 18px; }
+    .gb-notes { padding: 18px 16px; }
+    .gb-note { width: calc(33.33% - 12px); }
+  }
+
   .compass {
     position: fixed; top: 80px; right: 26px; width: 54px; height: 54px;
     border: 1px solid rgba(0,0,0,0.15); border-radius: 50%;
@@ -254,13 +534,13 @@
 <div class="compass"><div class="needle" id="needle"></div></div>
 
 <div class="hud hud-bl">
-  <div><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span>&nbsp;&nbsp;MOVE</div>
-  <div><span class="key wide">DRAG</span>&nbsp;ROTATE</div>
-  <div><span class="key wide">SCROLL</span>&nbsp;ZOOM</div>
+  <div><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span>&nbsp;/&nbsp;<span class="key">↑</span><span class="key">←</span><span class="key">↓</span><span class="key">→</span>&nbsp;&nbsp;이동</div>
+  <div><span class="key wide">드래그</span>&nbsp;회전</div>
+  <div><span class="key wide">스크롤</span>&nbsp;줌</div>
 </div>
 <div class="hud hud-br">
   <div class="coord" id="coord">x +00.0  z +00.0</div>
-  <div style="margin-top:4px; opacity:.7;">CAMERA · ORBIT</div>
+  <div style="margin-top:4px; opacity:.7;">카메라 · 궤도</div>
 </div>
 
 <!-- (depth scrollbar lives inside the 3D scene now — see buildDepthScrollbar in environment.js) -->
@@ -268,16 +548,16 @@
 <!-- Proximity prompt -->
 <div id="prompt">
   <span class="num" id="p-num">01</span>
-  <span class="title" id="p-title">PROJECT TITLE</span>
-  <span class="keyhint"><span class="key">ENTER</span>OPEN</span>
+  <span class="title" id="p-title">프로젝트</span>
+  <span class="keyhint"><span class="key">ENTER</span>열기</span>
 </div>
 
 <!-- Fullscreen project overlay -->
 <div id="overlay" aria-hidden="true">
   <div class="ov-frame">
     <div class="ov-top">
-      <div class="crumbs">WORKS · <b id="ov-crumb">PROJECT 01</b></div>
-      <button class="ov-close" id="ov-close"><span>CLOSE</span><span class="x"></span></button>
+      <div class="crumbs">작업 · <b id="ov-crumb">프로젝트 01</b></div>
+      <button class="ov-close" id="ov-close"><span>닫기</span><span class="x"></span></button>
     </div>
     <div class="ov-body">
       <div>
@@ -302,18 +582,83 @@
           background:#0d0d0d; color:#fff; border-radius:999px;
           padding:13px 24px; font-family:var(--sans); font-size:12px;
           letter-spacing:0.18em; text-decoration:none; width:fit-content;">
-          VISIT SITE &nbsp;↗
+          사이트 방문 &nbsp;↗
         </a>
       </div>
     </div>
     <div class="ov-bottom">
-      <div>SCROLL TO SEE MORE</div>
-      <div class="esc"><span class="key">ESC</span>RETURN TO ROOM</div>
+      <div>스크롤해서 더 보기</div>
+      <div class="esc"><span class="key">ESC</span>룸으로 돌아가기</div>
     </div>
   </div>
 </div>
 
-<div id="boot"><div class="ring"></div><div class="label">PREPARING ROOM</div></div>
+<!-- URL transition flash -->
+<div id="nav-flash"><div class="nf-label">연결 중 ···</div></div>
+
+<!-- Embed iframe overlay -->
+<div id="embed-overlay" aria-hidden="true">
+  <div class="embed-top">
+    <div class="embed-title">작업 · <b id="embed-label">프레젠테이션</b></div>
+    <a id="embed-back-btn" href="https://portfolio-room-peach.vercel.app">← 메인페이지로 돌아가기</a>
+    <button class="ov-close" id="embed-close"><span>닫기</span><span class="x"></span></button>
+  </div>
+  <div class="embed-body">
+    <div class="embed-main" id="embed-main">
+      <iframe id="embed-frame" src="" frameborder="0" allowfullscreen
+        allow="autoplay; fullscreen; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+    </div>
+    <div class="embed-side" id="embed-side">
+      <div class="qr-wrap">
+        <img id="embed-qr" src="" alt="QR Code" width="160" height="160">
+      </div>
+      <div class="qr-label">스마트폰으로 스캔해서<br>직접 들어보세요</div>
+      <a id="embed-qr-link" href="#" target="_blank" rel="noopener" class="qr-badge">
+        ▶ YouTube로 열기
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Guestbook overlay -->
+<div id="gb-overlay" aria-hidden="true">
+  <div class="gb-frame">
+    <div class="gb-header">
+      <div class="gb-title-row">
+        <div>
+          <div class="gb-heading">방명록</div>
+          <div class="gb-sub">GUESTBOOK</div>
+        </div>
+      </div>
+      <button class="ov-close" id="gb-close"><span>닫기</span><span class="x"></span></button>
+    </div>
+    <div class="gb-body">
+      <div class="gb-form-area">
+        <div class="gb-cork-label">한 마디 남겨주세요</div>
+        <div class="gb-sticky-pad">
+          <input id="gb-name" type="text" placeholder="이름 (선택사항)" maxlength="20" autocomplete="off" />
+          <textarea id="gb-msg" placeholder="짧아도 괜찮아요 ✏️" maxlength="150" rows="4"></textarea>
+          <div class="gb-form-footer">
+            <span class="gb-char-count"><span id="gb-count">0</span> / 150</span>
+            <button id="gb-submit">남기기 →</button>
+          </div>
+        </div>
+        <div class="gb-hint">Ctrl+Enter로도 남길 수 있어요</div>
+      </div>
+      <div id="gb-notes" class="gb-notes">
+        <div class="gb-empty">아직 아무도 없어요.<br>첫 번째가 되어보세요 ✏️</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="boot"><div class="ring"></div><div class="label">룸 준비 중</div></div>
+
+<!-- Embed overlay inactivity warning banner -->
+<div id="embed-warn" aria-hidden="true">
+  <div class="warn-text"><b id="embed-warn-count">15</b>초 후 메인페이지로 이동합니다</div>
+  <button id="embed-warn-stay">머무르기</button>
+</div>
 
 <script type="importmap">
 {
@@ -325,6 +670,77 @@
 </script>
 
 <script type="module" src="./room/main.js"></script>
+
+<script>
+// ── Embed overlay 1-minute inactivity timer ──────────────────────────────────
+(function () {
+  const TIMEOUT   = 2 * 60 * 1000;  // 2 minutes → redirect
+  const WARN_BEFORE = 15 * 1000; // show warning 15s before redirect
+  const DEST      = 'https://portfolio-room-peach.vercel.app';
+
+  const warnEl    = document.getElementById('embed-warn');
+  const countEl   = document.getElementById('embed-warn-count');
+  const stayBtn   = document.getElementById('embed-warn-stay');
+  const overlayEl = document.getElementById('embed-overlay');
+
+  let idleTimer   = null;
+  let warnTimer   = null;
+  let countdownInterval = null;
+  let active      = false;
+
+  function isOpen() {
+    return overlayEl && overlayEl.classList.contains('open');
+  }
+
+  function showWarn() {
+    let secs = Math.ceil(WARN_BEFORE / 1000);
+    countEl.textContent = secs;
+    warnEl.classList.add('show');
+    warnEl.setAttribute('aria-hidden', 'false');
+    countdownInterval = setInterval(() => {
+      secs--;
+      if (secs <= 0) { clearInterval(countdownInterval); return; }
+      countEl.textContent = secs;
+    }, 1000);
+  }
+
+  function hideWarn() {
+    clearInterval(countdownInterval);
+    warnEl.classList.remove('show');
+    warnEl.setAttribute('aria-hidden', 'true');
+  }
+
+  function reset() {
+    if (!isOpen()) return;
+    clearTimeout(idleTimer);
+    clearTimeout(warnTimer);
+    hideWarn();
+    warnTimer = setTimeout(showWarn, TIMEOUT - WARN_BEFORE);
+    idleTimer = setTimeout(() => { window.location.href = DEST; }, TIMEOUT);
+  }
+
+  function stop() {
+    clearTimeout(idleTimer);
+    clearTimeout(warnTimer);
+    hideWarn();
+    active = false;
+  }
+
+  // Watch overlay open/close
+  const observer = new MutationObserver(() => {
+    if (isOpen()) { active = true; reset(); }
+    else           { stop(); }
+  });
+  observer.observe(overlayEl, { attributes: true, attributeFilter: ['class'] });
+
+  // Any user activity resets the timer
+  ['mousemove', 'mousedown', 'touchstart', 'keydown', 'scroll'].forEach(ev => {
+    document.addEventListener(ev, () => { if (active && isOpen()) reset(); }, { passive: true });
+  });
+
+  stayBtn.addEventListener('click', () => { if (isOpen()) reset(); });
+})();
+</script>
 
 </body>
 </html>

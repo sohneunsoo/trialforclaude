@@ -5,51 +5,62 @@ export const PROJECTS = [
   {
     id: 1,
     code: "—",
-    title: "—",
-    titleEn: "COMING SOON",
-    tags: "—",
+    title: "아이돌 기획안",
+    titleEn: "아이돌기획안",
+    tags: "프레젠테이션",
     tone: "#0d0d0d",
     accent: "#ffffff",
-    year: "—", role: "—", status: "—",
+    year: "2026", role: "—", status: "Live",
     desc1: "", desc2: "",
-    dark: true
+    dark: true,
+    url: "https://docs.google.com/presentation/d/1D9qa-QjVEqbrRyFuXQWwUjZLeg5v7Jos/embed?start=false&loop=false&delayms=3000",
+    embed: true,
+    cover: "./covers/idol-plan.png"
   },
   {
     id: 2,
     code: "—",
-    title: "GATCHA",
-    titleEn: "GATCHA",
+    title: "가챠",
+    titleEn: "가챠",
     tags: "게임 · 인터랙티브",
     tone: "#0d0d0d",
     accent: "#ffffff",
     year: "2026", role: "—", status: "Live",
     desc1: "", desc2: "",
     dark: true,
-    url: "https://gatcha-six.vercel.app/"
+    url: "https://gatcha-six.vercel.app/",
+    cover: "./covers/gatcha.png"
   },
   {
     id: 3,
     code: "—",
-    title: "—",
-    titleEn: "COMING SOON",
-    tags: "—",
+    title: "아이돌과 대화",
+    titleEn: "아이돌과 대화",
+    tags: "웹 · 인터랙티브",
     tone: "#0d0d0d",
     accent: "#ffffff",
-    year: "—", role: "—", status: "—",
+    year: "2026", role: "—", status: "Live",
     desc1: "", desc2: "",
-    dark: true
+    dark: true,
+    url: "https://monosian-web-demo.vercel.app/",
+    cover: "./covers/chat-with-idol.png"
   },
   {
     id: 4,
     code: "—",
-    title: "—",
-    titleEn: "COMING SOON",
-    tags: "—",
+    title: "파일럿 뮤직",
+    titleEn: "파일럿 뮤직",
+    tags: "음악 · 영상",
     tone: "#0d0d0d",
     accent: "#ffffff",
-    year: "—", role: "—", status: "—",
+    year: "2026", role: "—", status: "Live",
     desc1: "", desc2: "",
-    dark: true
+    dark: true,
+    url: "https://www.youtube.com/embed/YtLy9jbRPBc?autoplay=1&rel=0",
+    embed: true,
+    vertical: true,
+    qr: "https://youtube.com/shorts/YtLy9jbRPBc",
+    cover: "./covers/pilot-music-1.png"
   },
 
   // ── AI ROW (row 2 — AI content pages + 2 empty slots) ──────────────────
@@ -57,7 +68,7 @@ export const PROJECTS = [
     id: 13,
     code: "AI·1",
     title: "AI 제작 툴 도감",
-    titleEn: "AI TOOL MAP",
+    titleEn: "AI 툴 도감",
     tags: "리소스 · AI · 툴",
     tone: "#0a1a3a",
     accent: "#7ab8ff",
@@ -66,13 +77,14 @@ export const PROJECTS = [
     status: "Live",
     desc1: "AI 툴은 모델명으로 외우는 것보다 작업 목적별로 분류해서 쓰는 것이 중요합니다.",
     desc2: "영상·오디오·3D·디자인·코딩·오픈소스까지 작업별로 찾아보는 AI 툴 맵.",
-    url: "./ai-tool-map.html"
+    url: "./ai-tool-map.html",
+    cover: "./covers/ai-tool-map.png"
   },
   {
     id: 14,
     code: "AI·2",
     title: "AI 작업자 생존 가이드",
-    titleEn: "AI CREATOR GUIDE",
+    titleEn: "AI 작업자 가이드",
     tags: "가이드 · AI · 워크플로우",
     tone: "#1a0a2e",
     accent: "#ffb3d9",
@@ -81,32 +93,56 @@ export const PROJECTS = [
     status: "Live",
     desc1: "AI를 잘 쓰는 사람은 프롬프트를 많이 아는 사람이 아닙니다.",
     desc2: "작업을 나누고, 검증하고, 실패를 기록하고, 다시 쓸 수 있게 축적하는 사람입니다.",
-    url: "./ai-creator-guide.html"
+    url: "./ai-creator-guide.html",
+    cover: "./covers/ai-creator-guide.png"
   },
   {
     id: 15,
-    code: "—",
-    title: "—",
-    titleEn: "COMING SOON",
-    tags: "—",
-    tone: "#e9e5dd",
-    accent: "#aaaaaa",
-    year: "—", role: "—", status: "—",
-    desc1: "", desc2: ""
+    code: "AI·3",
+    title: "프롬프트 아카이브",
+    titleEn: "프롬프트 아카이브",
+    tags: "프롬프트 · AI · 영상 · 디자인",
+    tone: "#2d1f0e",
+    accent: "#b85c1a",
+    year: "2026",
+    role: "Researcher · Curator",
+    status: "Live",
+    desc1: "영상·이미지·디자인·음악·AI 워크플로우 프롬프트 모음.",
+    desc2: "31개 파일에서 수집·번역. 검색·복사 가능한 아카이브.",
+    url: "./prompt-archive.html",
+    cover: "./covers/prompt-archive.png"
   },
   {
     id: 16,
-    code: "—",
-    title: "—",
-    titleEn: "COMING SOON",
-    tags: "—",
-    tone: "#e9e5dd",
-    accent: "#aaaaaa",
-    year: "—", role: "—", status: "—",
-    desc1: "", desc2: ""
+    code: "AI·4",
+    title: "AI 트렌드 카드뉴스",
+    titleEn: "AI 트렌드",
+    tags: "카드뉴스 · AI · 트렌드",
+    tone: "#0f1a2e",
+    accent: "#4fc3f7",
+    year: "2026",
+    role: "Editor · Designer",
+    status: "Series",
+    desc1: "AI 업계의 주요 흐름을 카드뉴스 형식으로 정리한 시리즈.",
+    desc2: "모델 출시, 정책 변화, 툴 업데이트 등 실무에 영향을 주는 정보를 빠르게 전달합니다.",
+    cover: "./covers/ai-trend.png",
+    gallery: [
+      "./cardnews/slide-01.png",
+      "./cardnews/slide-02.png",
+      "./cardnews/slide-03.png",
+      "./cardnews/slide-04.png",
+      "./cardnews/slide-05.png",
+      "./cardnews/slide-06.png",
+      "./cardnews/slide-07.png",
+      "./cardnews/slide-08.png",
+      "./cardnews/slide-09.png",
+      "./cardnews/slide-10.png",
+      "./cardnews/slide-11.png"
+    ]
   },
 
-  // ── MIDDLE ROW (projects 01 – 04) ────────────────────────────────────────
+  // ── (WIP rows removed — will be added back when ready) ──────────────────
+  /*
   {
     id: 5,
     code: "01",
@@ -119,13 +155,14 @@ export const PROJECTS = [
     role: "Curation · Direction",
     status: "Exhibited",
     desc1: "An exhibition exploring the inner emotional life of isolated youth, mediated through AI-generated character studies and large-scale printed portraits.",
-    desc2: "Visitors walked between thirty robot-portraits, each with a recorded inner monologue triggered as they approached."
+    desc2: "Visitors walked between thirty robot-portraits, each with a recorded inner monologue triggered as they approached.",
+    wip: true
   },
   {
     id: 6,
     code: "02",
-    title: "GENERATIVE AGENT GAME",
-    titleEn: "GENERATIVE AGENT GAME",
+    title: "제너레이티브 에이전트 게임",
+    titleEn: "제너레이티브 에이전트 게임",
     tags: "AI · 게임 · 개발",
     tone: "#1c2434",
     accent: "#5b78b8",
@@ -133,13 +170,14 @@ export const PROJECTS = [
     role: "Concept · Build",
     status: "Prototype",
     desc1: "A small simulation where each NPC carries its own memory and motivations, written by a generative model in the loop.",
-    desc2: "The player is the only human in a town of agents. Conversations branch indefinitely; nothing is scripted."
+    desc2: "The player is the only human in a town of agents. Conversations branch indefinitely; nothing is scripted.",
+    wip: true
   },
   {
     id: 7,
     code: "03",
-    title: "MY BOOK WITH AI",
-    titleEn: "MY BOOK WITH AI",
+    title: "AI와 나의 책",
+    titleEn: "AI와 나의 책",
     tags: "출판 · 만화 · AI",
     tone: "#ecebe6",
     accent: "#2a2a2a",
@@ -147,13 +185,14 @@ export const PROJECTS = [
     role: "Author · Illustrator",
     status: "Published",
     desc1: "A short graphic novel co-written with a language model — the model proposed sentences, the author refused most of them.",
-    desc2: "What remains is a strange dialogue between two writing styles, printed on uncoated stock with photocopied insets."
+    desc2: "What remains is a strange dialogue between two writing styles, printed on uncoated stock with photocopied insets.",
+    wip: true
   },
   {
     id: 8,
     code: "04",
-    title: "STORY BOOK",
-    titleEn: "STORY BOOK",
+    title: "그림책",
+    titleEn: "그림책",
     tags: "스토리 · 기획 · 일러스트",
     tone: "#c6d3b1",
     accent: "#4f6b3a",
@@ -161,15 +200,16 @@ export const PROJECTS = [
     role: "Writer · Illustrator",
     status: "Series",
     desc1: "A picture-book series following a small house and the seasons that pass through it.",
-    desc2: "Each spread is hand-painted in gouache, scanned, and laid out alongside a single sentence."
+    desc2: "Each spread is hand-painted in gouache, scanned, and laid out alongside a single sentence.",
+    wip: true
   },
 
   // ── FRONT ROW (projects 05 – 08) ─────────────────────────────────────────
   {
     id: 9,
     code: "05",
-    title: "BENNY'S ROOM BRANDING",
-    titleEn: "BENNY'S ROOM",
+    title: "베니스 룸 브랜딩",
+    titleEn: "베니스 룸 브랜딩",
     tags: "브랜딩 · 디자인",
     tone: "#1f3a2a",
     accent: "#d8c98a",
@@ -177,13 +217,14 @@ export const PROJECTS = [
     role: "Brand Direction",
     status: "Live",
     desc1: "Branding system for a small café-bookstore — wordmark, signage, menus, paper goods, and a recurring window installation.",
-    desc2: "The identity leans into warm green and brass, photographed at night through the storefront glass."
+    desc2: "The identity leans into warm green and brass, photographed at night through the storefront glass.",
+    wip: true
   },
   {
     id: 10,
     code: "06",
-    title: "EMOTICON",
-    titleEn: "EMOTICON",
+    title: "이모티콘",
+    titleEn: "이모티콘",
     tags: "이모티콘 · 캐릭터",
     tone: "#e2d8c8",
     accent: "#8c6a44",
@@ -191,13 +232,14 @@ export const PROJECTS = [
     role: "Character Design",
     status: "Released",
     desc1: "A set of wooden-bear emoticons designed for a messaging platform. Three siblings, twenty-four moods.",
-    desc2: "Modeled in clay first, then redrawn as flat vector. The proofs were soft enough to look photographed."
+    desc2: "Modeled in clay first, then redrawn as flat vector. The proofs were soft enough to look photographed.",
+    wip: true
   },
   {
     id: 11,
     code: "07",
-    title: "COMMISSIONED ART & WORKS",
-    titleEn: "COMMISSIONED ART",
+    title: "커미션 아트 & 작업",
+    titleEn: "커미션 아트 & 작업",
     tags: "일러스트 · 영상 · 작업",
     tone: "#3b2a3a",
     accent: "#c69ec0",
@@ -205,13 +247,14 @@ export const PROJECTS = [
     role: "Illustrator",
     status: "Ongoing",
     desc1: "An archive of commissioned portraits, editorial illustrations, and short motion pieces for clients in publishing and music.",
-    desc2: "Selected works only. Each piece is its own world."
+    desc2: "Selected works only. Each piece is its own world.",
+    wip: true
   },
   {
     id: 12,
     code: "08",
-    title: "ANIMATION",
-    titleEn: "ANIMATION",
+    title: "애니메이션",
+    titleEn: "애니메이션",
     tags: "애니메이션 · 영상",
     tone: "#9bbcde",
     accent: "#2a5582",
@@ -219,6 +262,8 @@ export const PROJECTS = [
     role: "Director · Animator",
     status: "Short Film",
     desc1: "A four-minute hand-drawn animation about a girl, a small white dog, and the bridge between two cities.",
-    desc2: "Screened at three festivals; the score is built from field recordings of the same bridge in different weather."
+    desc2: "Screened at three festivals; the score is built from field recordings of the same bridge in different weather.",
+    wip: true
   }
+  */
 ];

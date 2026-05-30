@@ -7,30 +7,31 @@ import {
   makeBillboardTexture
 } from './textures.js';
 
-// Room dimensions (units = ~decimeters; ~28 x 32)
+// Room dimensions (units = ~decimeters; ~26 x 32)
 export const ROOM = {
-  width: 28,
-  depth: 32,
+  width: 26,
+  depth: 26,
   wallH: 3.6,
   outerThick: 0.5,
   chromeH: 1.6 // title bar height (sits above the back wall)
 };
 
-// 4 rows x 4 cols of project alcoves, sunken into floor
+// 2 rows x 4 cols of project alcoves, sunken into floor
 const COLS = 4;
-const ROWS = 4;
-const ALCOVE_W = 4.4;
-const ALCOVE_D = 4.4;
-const ALCOVE_GAP_X = 0.55;
-const ALCOVE_GAP_Z = 0.6;
+const ROWS = 2;
+const ALCOVE_W = 5.8;
+const ALCOVE_D = 7.0;
+const ALCOVE_GAP_X = 0.30;
+const ALCOVE_GAP_Z = 1.5;
 
-// z layout (back -> front)
-//   -11   back wall
-//   -11..-3.5    hero zone (height stuff against back wall)
-//   -3.2..1.0    project row 1
-//    1.6..5.8    project row 2
-//    6.0..8.5    footer (dark)
-//    9.0    front edge
+// z layout (back -> front)  [halfD = 16, halfW = 13]
+//  -16   back wall
+//  -16..-7.2    hero zone
+//   -7.2..-0.2  project row 1  (grid 24.85 wide, ±0.6 margin)
+//    2.8..9.8   project row 2  (3.0 gap between rows)
+//   10.5..12.9  guestbook section  (0.7 gap before, 0.3 gap to footer)
+//   13.2..15.8  footer
+//   16.0        front edge
 
 export function buildEnvironment(scene) {
   const group = new THREE.Group();
@@ -74,7 +75,8 @@ export function buildEnvironment(scene) {
   backWall.castShadow = true; backWall.receiveShadow = true;
   group.add(backWall);
 
-  // side walls (sloped down toward the front — diorama wedge)
+  // side walls (sloped down toward the front — diorama wedge) — light blue
+  const sideWallMat = whiteMatte({ color: '#aecde0' });
   for (const side of [-1, 1]) {
     const shape = new THREE.Shape();
     shape.moveTo(0, 0);
@@ -83,7 +85,7 @@ export function buildEnvironment(scene) {
     shape.lineTo(0, ROOM.wallH);   // back edge tall
     shape.lineTo(0, 0);
     const geom = new THREE.ExtrudeGeometry(shape, { depth: ROOM.outerThick, bevelEnabled: false });
-    const mesh = new THREE.Mesh(geom, wMat);
+    const mesh = new THREE.Mesh(geom, sideWallMat);
     mesh.rotation.y = Math.PI / 2;
     mesh.position.set(side * (halfW + ROOM.outerThick / 2 - 0.001), 0, -halfD);
     mesh.scale.x = side; // flip so the inside face is inward
@@ -94,10 +96,10 @@ export function buildEnvironment(scene) {
   // --- HERO ZONE (back band, contains title plate + big artwork) ---
   // raised platform behind alcoves
   const heroPlatform = new THREE.Mesh(
-    new THREE.BoxGeometry(ROOM.width - 0.6, 0.6, 8.0),
+    new THREE.BoxGeometry(ROOM.width - 0.6, 0.6, 6.5),
     whiteMatte({ color: '#f3efe6' })
   );
-  heroPlatform.position.set(0, 0.30, -halfD + 4.0 + 0.3);
+  heroPlatform.position.set(0, 0.30, -halfD + 3.25);
   heroPlatform.receiveShadow = true; heroPlatform.castShadow = true;
   group.add(heroPlatform);
 
@@ -231,7 +233,7 @@ export function buildEnvironment(scene) {
 
   // --- PROJECT ALCOVES ---
   // grid starts under the hero platform (z = -halfD + 8.6 = ~ -2.4 + something)
-  const alcoveBandZ0 = -halfD + 8.8; // top edge of row 1 (back-most)
+  const alcoveBandZ0 = -halfD + 6.5; // top edge of row 1 (back-most)
   const totalGridW = COLS * ALCOVE_W + (COLS - 1) * ALCOVE_GAP_X;
   const startX = -totalGridW / 2 + ALCOVE_W / 2;
 
@@ -243,7 +245,7 @@ export function buildEnvironment(scene) {
     g.fillStyle = '#f6f3ec'; g.fillRect(0,0,c.width,c.height);
     g.fillStyle = '#5b5b5b';
     g.font = '600 28px "Helvetica Neue", Helvetica, Arial, sans-serif';
-    g.fillText('SELECTED WORK', 30, 80);
+    g.fillText('선택된 작업', 30, 80);
     g.fillStyle = '#0d0d0d';
     g.font = '600 96px "Cormorant Garamond", serif';
     g.fillText('프로젝트', 26, 190);
@@ -274,7 +276,7 @@ export function buildEnvironment(scene) {
       projectMounts.push({
         project,
         position: new THREE.Vector3(cx, 0, cz),
-        radius: 2.4,
+        radius: 3.8,
         platform: alcove.userData.platform
       });
     }
@@ -288,7 +290,7 @@ export function buildEnvironment(scene) {
       new THREE.BoxGeometry(ROOM.width, footerH, 2.6),
       darkMatte({ color: '#0d0d10' })
     );
-    footer.position.set(0, footerH / 2, halfD - 1.5);
+    footer.position.set(0, footerH / 2, halfD - 0.5);
     footer.receiveShadow = true; footer.castShadow = true;
     group.add(footer);
 
@@ -297,8 +299,193 @@ export function buildEnvironment(scene) {
       new THREE.MeshStandardMaterial({ map: tex, roughness: 0.7 })
     );
     top.rotation.x = -Math.PI / 2;
-    top.position.set(0, footerH + 0.001, halfD - 1.5);
+    top.position.set(0, footerH + 0.001, halfD - 0.5);
     group.add(top);
+  }
+
+  // ============================================================
+  // GUESTBOOK — styled as a 2D website "Contact" section in 3D
+  // Sits between the last project row and the footer, like a
+  // full-width section of a scrolling portfolio site.
+  // Left column = section heading; right = flat 3D form card.
+  // ============================================================
+  {
+    const secZ0    = 8.5;   // natural gap before footer — not touching
+    const secDepth = 2.4;
+    const secZc    = secZ0 + secDepth / 2;
+    const secW     = ROOM.width - 1.0;  // ~27 units wide
+
+    // ── section background panel (like a coloured section bg on a website) ──
+    const secPanel = new THREE.Mesh(
+      new THREE.BoxGeometry(secW, 0.045, secDepth),
+      whiteMatte({ color: '#e4dfd4' })
+    );
+    secPanel.position.set(0, 0.172, secZc);
+    secPanel.receiveShadow = true;
+    group.add(secPanel);
+
+    // ── top divider (hairline — mirrors website hr / section boundary) ──
+    const divTop = new THREE.Mesh(
+      new THREE.BoxGeometry(secW, 0.035, 0.035),
+      darkMatte({ color: '#1a1a1a', roughness: 0.95 })
+    );
+    divTop.position.set(0, 0.198, secZ0 + 0.018);
+    group.add(divTop);
+
+    // bottom divider (where section meets footer)
+    const divBot = divTop.clone();
+    divBot.position.z = secZ0 + secDepth - 0.018;
+    group.add(divBot);
+
+    // ── LEFT COLUMN: section number + heading + sub ──────────────────────
+    {
+      const cw = 640, ch = 320;
+      const c = document.createElement('canvas');
+      c.width = cw; c.height = ch;
+      const g = c.getContext('2d');
+      g.fillStyle = '#e4dfd4';
+      g.fillRect(0, 0, cw, ch);
+
+      // section index tag
+      g.fillStyle = '#a09880';
+      g.font = '500 26px ui-monospace, "SF Mono", Menlo, monospace';
+      g.fillText('§ 04', 20, 50);
+
+      // large serif heading
+      g.fillStyle = '#111';
+      g.font = '500 142px "Cormorant Garamond", "Times New Roman", serif';
+      g.fillText('방명록', 12, 218);
+
+      // EN label
+      g.fillStyle = '#8a8070';
+      g.font = '400 28px "Helvetica Neue", Helvetica, Arial, sans-serif';
+      g.fillText('GUESTBOOK', 18, 270);
+
+      // subtitle
+      g.fillStyle = '#6a6050';
+      g.font = '400 24px "Helvetica Neue", Helvetica, Arial, sans-serif';
+      g.fillText('한 마디 남겨주세요', 18, 308);
+
+      const tex = new THREE.CanvasTexture(c);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      const lbl = new THREE.Mesh(
+        new THREE.PlaneGeometry(9.0, 2.1),
+        new THREE.MeshStandardMaterial({ map: tex, roughness: 0.88 })
+      );
+      lbl.rotation.x = -Math.PI / 2;
+      lbl.position.set(-7.0, 0.22, secZc - 0.1);
+      group.add(lbl);
+    }
+
+    // ── RIGHT COLUMN: flat 3D contact-form card ───────────────────────────
+    // card base (white card, like a website form container)
+    const cardW = 12.0, cardD = secDepth - 0.4;
+    const formCard = new THREE.Mesh(
+      new THREE.BoxGeometry(cardW, 0.06, cardD),
+      whiteMatte({ color: '#faf8f3' })
+    );
+    formCard.position.set(5.5, 0.22, secZc);
+    formCard.castShadow = true; formCard.receiveShadow = true;
+    group.add(formCard);
+
+    // card left rule (vertical accent line — like a website form border)
+    const cardRule = new THREE.Mesh(
+      new THREE.BoxGeometry(0.04, 0.06, cardD - 0.1),
+      darkMatte({ color: '#c8c0b0', roughness: 0.9 })
+    );
+    cardRule.position.set(5.5 - cardW / 2 + 0.06, 0.22, secZc);
+    group.add(cardRule);
+
+    // helper to make a flat input-field strip
+    function makeField(label, xc, zc, fw, fh) {
+      // field track
+      const field = new THREE.Mesh(
+        new THREE.BoxGeometry(fw, 0.028, fh),
+        whiteMatte({ color: '#e0dcd4' })
+      );
+      field.position.set(xc, 0.264, zc);
+      group.add(field);
+      // placeholder label on the field
+      const fc = document.createElement('canvas');
+      fc.width = 512; fc.height = 48;
+      const fg = fc.getContext('2d');
+      fg.fillStyle = '#e0dcd4';
+      fg.fillRect(0, 0, 512, 48);
+      fg.fillStyle = '#b0a898';
+      fg.font = '400 26px "Helvetica Neue", Helvetica, Arial, sans-serif';
+      fg.textBaseline = 'middle';
+      fg.fillText(label, 14, 24);
+      const ftex = new THREE.CanvasTexture(fc);
+      ftex.colorSpace = THREE.SRGBColorSpace;
+      const fplane = new THREE.Mesh(
+        new THREE.PlaneGeometry(fw, fh),
+        new THREE.MeshStandardMaterial({ map: ftex, roughness: 0.88 })
+      );
+      fplane.rotation.x = -Math.PI / 2;
+      fplane.position.set(xc, 0.279, zc);
+      group.add(fplane);
+    }
+
+    const fcx = 5.5;  // form card center X
+    makeField('이름  ·  Name',      fcx, secZc - 0.80, 10.5, 0.55);
+    makeField('메시지  ·  Message', fcx, secZc + 0.10, 10.5, 0.80);
+
+    // submit button (dark pill — like a website CTA button)
+    const btnW = 3.2, btnH = 0.50;
+    const btnMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(btnW, 0.072, btnH),
+      darkMatte({ color: '#111111', roughness: 0.38, metalness: 0.05 })
+    );
+    btnMesh.position.set(fcx, 0.26, secZc + 0.95);
+    btnMesh.castShadow = true;
+    group.add(btnMesh);
+    // button label
+    {
+      const bc = document.createElement('canvas');
+      bc.width = 256; bc.height = 48;
+      const bg = bc.getContext('2d');
+      bg.fillStyle = '#111';
+      bg.fillRect(0, 0, 256, 48);
+      bg.fillStyle = '#fff';
+      bg.font = '600 24px "Helvetica Neue", Helvetica, Arial, sans-serif';
+      bg.textAlign = 'center';
+      bg.textBaseline = 'middle';
+      bg.fillText('남기기  →', 128, 24);
+      const btex = new THREE.CanvasTexture(bc);
+      btex.colorSpace = THREE.SRGBColorSpace;
+      const bplane = new THREE.Mesh(
+        new THREE.PlaneGeometry(btnW, btnH),
+        new THREE.MeshStandardMaterial({ map: btex, roughness: 0.8 })
+      );
+      bplane.rotation.x = -Math.PI / 2;
+      bplane.position.set(fcx, 0.298, secZc + 0.95);
+      group.add(bplane);
+    }
+
+    // "ENTER" interaction hint — printed in the card, website-style tooltip
+    {
+      const hc = document.createElement('canvas');
+      hc.width = 384; hc.height = 48;
+      const hg = hc.getContext('2d');
+      hg.fillStyle = '#faf8f3';
+      hg.fillRect(0, 0, 384, 48);
+      hg.fillStyle = '#b0a898';
+      hg.font = '400 22px ui-monospace, "SF Mono", Menlo, monospace';
+      hg.textBaseline = 'middle';
+      hg.fillText('[ ENTER ] 눌러서 열기', 12, 24);
+      const htex = new THREE.CanvasTexture(hc);
+      htex.colorSpace = THREE.SRGBColorSpace;
+      const hplane = new THREE.Mesh(
+        new THREE.PlaneGeometry(6.0, 0.75),
+        new THREE.MeshStandardMaterial({ map: htex, roughness: 0.9 })
+      );
+      hplane.rotation.x = -Math.PI / 2;
+      hplane.position.set(fcx + 2.5, 0.285, secZc - 0.80);
+      group.add(hplane);
+    }
+
+    group.userData.guestbookPosition = new THREE.Vector3(0, 0, secZc);
+    group.userData.guestbookRadius = 3.5;
   }
 
   // ============== 3D SCROLLBAR (right inside-wall) ==============
@@ -313,13 +500,13 @@ export function buildEnvironment(scene) {
     const sbZFront = +halfD - 3.4;      // bottom of track (in front of footer band)
     const sbY = 1.2;                    // mid-height
     const trackLen = sbZFront - sbZBack;
-    const trackW = 0.45;                // visible width of the gutter
+    const trackW = 0.68;                // visible width of the gutter (taller = more top-face area)
     const trackThick = 0.05;
 
     // recessed gutter (slightly inset, light tone) — runs along right wall
     const gutter = new THREE.Mesh(
-      new THREE.BoxGeometry(0.18, trackW, trackLen + 0.4),
-      whiteMatte({ color: '#ece8de', roughness: 0.9 })
+      new THREE.BoxGeometry(0.30, trackW, trackLen + 0.4),  // wider X → bigger top face from above
+      whiteMatte({ color: '#d4cec2', roughness: 0.85 })
     );
     gutter.rotation.x = 0; // flat against wall, long axis = Z
     gutter.position.set(sbX, sbY, (sbZBack + sbZFront) / 2);
@@ -373,9 +560,9 @@ export function buildEnvironment(scene) {
     // THUMB — chunky dark pill that rides along the gutter on Z
     const thumbLen = 2.6;
     const thumb = new THREE.Mesh(
-      new THREE.BoxGeometry(0.28, trackW - 0.10, thumbLen),
+      new THREE.BoxGeometry(0.32, trackW - 0.08, thumbLen),
       new THREE.MeshStandardMaterial({
-        color: '#1a1a1a', roughness: 0.55, metalness: 0.05
+        color: '#1e2845', roughness: 0.45, metalness: 0.10
       })
     );
     thumb.castShadow = true;
@@ -389,6 +576,41 @@ export function buildEnvironment(scene) {
     );
     grip.position.set(sbX - 0.14, sbY, thumb.position.z);
     group.add(grip);
+
+    // bright top-stripe on thumb — clearly visible from above camera angle
+    const thumbTop = new THREE.Mesh(
+      new THREE.BoxGeometry(0.34, 0.055, thumbLen - 0.15),
+      new THREE.MeshStandardMaterial({ color: '#4d80e8', roughness: 0.28, metalness: 0.20 })
+    );
+    thumbTop.position.set(sbX - 0.04, sbY + (trackW - 0.08) / 2 + 0.028, thumb.position.z);
+    group.add(thumbTop);
+
+    // ── FLOOR-MOUNTED SCROLLBAR INDICATOR (highly visible from above) ──────
+    const floorSbX = sbX - 0.32;      // slightly inward from wall thumb
+    const floorTrackW = 0.60;
+    // track rail on floor
+    const floorRail = new THREE.Mesh(
+      new THREE.BoxGeometry(floorTrackW, 0.028, trackLen + 0.4),
+      whiteMatte({ color: '#c8c2b4', roughness: 0.75 })
+    );
+    floorRail.position.set(floorSbX, 0.164, (sbZBack + sbZFront) / 2);
+    group.add(floorRail);
+    // edge trim lines along track (2 thin bright borders)
+    [-1, 1].forEach(side => {
+      const trim = new THREE.Mesh(
+        new THREE.BoxGeometry(0.04, 0.038, trackLen + 0.4),
+        new THREE.MeshStandardMaterial({ color: '#8aadcc', roughness: 0.55 })
+      );
+      trim.position.set(floorSbX + side * (floorTrackW / 2 - 0.02), 0.169, (sbZBack + sbZFront) / 2);
+      group.add(trim);
+    });
+    // sliding thumb on floor
+    const floorThumb = new THREE.Mesh(
+      new THREE.BoxGeometry(floorTrackW - 0.04, 0.055, thumbLen),
+      new THREE.MeshStandardMaterial({ color: '#2255bb', roughness: 0.32, metalness: 0.18 })
+    );
+    floorThumb.position.set(floorSbX, 0.177, thumb.position.z);
+    group.add(floorThumb);
 
     // vertical "DEPTH" label etched onto the wall above the back cap
     {
@@ -422,6 +644,8 @@ export function buildEnvironment(scene) {
         const z = sbZBack + f * trackLen;
         thumb.position.z = z;
         grip.position.z = z;
+        thumbTop.position.z = z;
+        floorThumb.position.z = z;
       },
       sbZBack, sbZFront, trackLen
     };
@@ -451,7 +675,8 @@ export function buildEnvironment(scene) {
   }
 
   scene.add(group);
-  return { group, projectMounts, billboard: group.userData.billboard, scrollbar: group.userData.scrollbar };
+  return { group, projectMounts, billboard: group.userData.billboard, scrollbar: group.userData.scrollbar,
+           guestbookPosition: group.userData.guestbookPosition, guestbookRadius: group.userData.guestbookRadius };
 }
 
 // One alcove: a sunken display case with a small framed image inside.
@@ -505,17 +730,26 @@ function buildAlcove(project) {
   const rr = rl.clone(); rr.position.x = wellW / 2 + rimT / 2; g.add(rr);
 
   // artwork standing inside the well (small framed plane)
-  const artTex = makePlaceholderTexture('[ ' + project.titleEn + ' ]', project.tone, project.accent);
-  const artW = wellW * 0.78;
+  const artTex = makePlaceholderTexture('[ ' + project.titleEn + ' ]', project.tone, project.accent, !!project.wip);
+  const artScale = project.wip ? 0.58 : 0.78;
+  const artW = wellW * artScale;
   const artH = artW * 0.78;
-  const art = new THREE.Mesh(
-    new THREE.PlaneGeometry(artW, artH),
-    new THREE.MeshStandardMaterial({ map: artTex, roughness: 0.6 })
-  );
+  const artMat = new THREE.MeshStandardMaterial({ map: artTex, roughness: 0.6 });
+  const art = new THREE.Mesh(new THREE.PlaneGeometry(artW, artH), artMat);
   art.position.set(0, 0.225 - 0.32 + artH / 2 + 0.05, -ALCOVE_D * 0.05);
   art.rotation.x = -0.06;
   art.castShadow = true;
   g.add(art);
+
+  // swap in real cover image when available
+  if (project.cover) {
+    new THREE.TextureLoader().load(project.cover, (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = 8;
+      artMat.map = tex;
+      artMat.needsUpdate = true;
+    });
+  }
 
   // little back board behind the art
   const backboard = new THREE.Mesh(
@@ -551,7 +785,7 @@ function buildWindowFrame(group, halfW, halfD) {
   const frameThickness = 0.6;
   const frameRise = 0.4;
   const frameY = -0.15;
-  const mat = whiteMatte({ color: '#e7e1d3' });
+  const mat = whiteMatte({ color: '#aecde0' });
 
   // top edge (back) — thicker, since this also becomes the chrome shelf base
   const top = new THREE.Mesh(
@@ -571,12 +805,12 @@ function buildWindowFrame(group, halfW, halfD) {
   bottom.castShadow = true; bottom.receiveShadow = true;
   group.add(bottom);
 
-  // left edge
+  // left edge — trimmed so it stops at back wall (no protrusion behind title bar)
   const left = new THREE.Mesh(
-    new THREE.BoxGeometry(frameThickness, frameRise, ROOM.depth + frameThickness * 2 + 0.6),
+    new THREE.BoxGeometry(frameThickness, frameRise, ROOM.depth + frameThickness * 2 - 0.4),
     mat
   );
-  left.position.set(-halfW - frameThickness / 2 - 0.5, frameY + frameRise / 2, -0.1);
+  left.position.set(-halfW - frameThickness / 2 - 0.5, frameY + frameRise / 2, 0.4);
   left.castShadow = true; left.receiveShadow = true;
   group.add(left);
 
@@ -596,7 +830,7 @@ function buildChrome(group, halfW, halfD) {
   // base slab (the title bar body)
   const slab = new THREE.Mesh(
     new THREE.BoxGeometry(barW, ROOM.chromeH, 0.45),
-    whiteMatte({ color: '#f1ede2' })
+    whiteMatte({ color: '#aecde0' })
   );
   slab.position.set(0, chromeY, chromeZ);
   slab.castShadow = true; slab.receiveShadow = true;
