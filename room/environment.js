@@ -825,7 +825,7 @@ function buildWindowFrame(group, halfW, halfD) {
 function buildChrome(group, halfW, halfD) {
   const chromeY = ROOM.wallH + ROOM.chromeH / 2 + 0.05;
   const chromeZ = -halfD - 0.05; // flush with back wall
-  const barW = ROOM.width - 0.2; // trimmed to stay within side walls
+  const barW = ROOM.width + ROOM.outerThick * 2; // covers full outer frame including side walls
 
   // base slab (the title bar body)
   const slab = new THREE.Mesh(
