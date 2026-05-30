@@ -75,23 +75,7 @@ export function buildEnvironment(scene) {
   backWall.castShadow = true; backWall.receiveShadow = true;
   group.add(backWall);
 
-  // side walls (sloped down toward the front — diorama wedge) — light blue
-  const sideWallMat = whiteMatte({ color: '#aecde0' });
-  for (const side of [-1, 1]) {
-    const shape = new THREE.Shape();
-    shape.moveTo(0, 0);
-    shape.lineTo(ROOM.depth, 0);
-    shape.lineTo(ROOM.depth, 0.6);
-    shape.lineTo(0, 0.6);
-    shape.lineTo(0, 0);
-    const geom = new THREE.ExtrudeGeometry(shape, { depth: ROOM.outerThick, bevelEnabled: false });
-    const mesh = new THREE.Mesh(geom, sideWallMat);
-    mesh.rotation.y = Math.PI / 2;
-    mesh.position.set(side * (halfW + ROOM.outerThick / 2 - 0.001), 0, -halfD);
-    mesh.scale.x = side; // flip so the inside face is inward
-    mesh.castShadow = true; mesh.receiveShadow = true;
-    group.add(mesh);
-  }
+  // side walls removed
 
   // --- HERO ZONE (back band, contains title plate + big artwork) ---
   // raised platform behind alcoves
